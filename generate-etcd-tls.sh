@@ -1,5 +1,7 @@
 #! /bin/bash
 
+cd etcd
+
 source etcdenv.sh
 
 cat > etcd-csr.json <<EOF

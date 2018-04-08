@@ -1,0 +1,15 @@
+source /usr/k8s/bin/env.sh
+
+export CURRENT_NODE_NAME=ETCD3
+
+CURRENT_NODE_IP=$CURRENT_NODE_NAME"_IP"
+
+export CURRENT_NODE_IP=${!CURRENT_NODE_IP}
+#echo $CURRENT_NODE_IP
+
+export ETCD_NODE_IPS="$ETCD1_IP $ETCD2_IP $ETCD3_IP"
+#echo $ETCD_NODE_IPS
+
+export ETCD_NODES=etcd01=https://$ETCD1:2380,etcd02=https://$ETCD2:2380,etcd03=https://$ETCD3:2380
+#echo $ETCD_NODES
+
