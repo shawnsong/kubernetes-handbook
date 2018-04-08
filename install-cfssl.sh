@@ -1,8 +1,5 @@
 #! /bin/bash
 
-sudo mkdir -p /usr/k8s/bin
-sudo cp env.sh /usr/k8s/bin
-
 # install cfssl
 curl -O https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
 chmod +x cfssl_linux-amd64
