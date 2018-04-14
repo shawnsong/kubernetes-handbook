@@ -1,11 +1,27 @@
 {
     "signing": {
         "default": {
-            "expiry": "87600h"
+            "expiry": "43800h"
         },
         "profiles": {
-            "kubernetes": {
-                "expiry": "8760h",
+            "server": {
+                "expiry": "43800h",
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "server auth"
+                ]
+            },
+            "client": {
+                "expiry": "43800h",
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "client auth"
+                ]
+            },
+            "peer": {
+                "expiry": "43800h",
                 "usages": [
                     "signing",
                     "key encipherment",
