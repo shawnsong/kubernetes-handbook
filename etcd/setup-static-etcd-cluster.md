@@ -64,7 +64,6 @@ cfssl gencert --initca=true ca-csr.json | cfssljson --bare etcd-root-ca
 #### Server certificate
 ``` sheel
 echo '{"CN":"server ca","hosts":[""],"key":{"algo":"rsa","size":2048}}' | cfssl gencert -ca=etcd-root-ca.pem -ca-key=etcd-root-ca-key.pem -config ca-config.json -profile=server -hostname="192.168.1.101,192.168.1.102,192.168.1.103,127.0.0.1,etcd1,etcd2,etcd3" - | cfssljson -bare server
-
 ```
 #### Peer certificates
 
@@ -166,9 +165,13 @@ etcd --name etcd3 --initial-advertise-peer-urls https://192.168.1.101:2380 \
   --data-dir /var/lib/etcd
 ```
 When the three nodes are all up, we should see message 'established a TCP streaming connection with peer 4469cb53324fe68b' on each node. Then we can test the cluster by **set** a value to one node (etcd1)
-`curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd1:2379/v2/keys/foo -XPUT -d value=bar -v`
+```shell
+curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd1:2379/v2/keys/foo -XPUT -d value=bar -v`
+```
 and **get** the value from a different node (etcd2 or etcd3)
-`curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd2:2379/v2/keys/foo -XGET -v`
+```shell
+curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd2:2379/v2/keys/foo -XGET -v`
+```
 Or we can use etcdctl
 ```shell
 export ETCDCTL_API=3
@@ -209,5 +212,5 @@ openssl x509 -in etcd-root-ca.pem -text -noout
 openssl x509 -in server.pem -text -noout
 openssl x509 -in client.pem -text -noout
 ```
-- Bootstrap the cluster
-See above
+- Bootstrap the cluster <br />
+ See above
