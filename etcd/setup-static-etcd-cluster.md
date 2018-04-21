@@ -166,11 +166,11 @@ etcd --name etcd3 --initial-advertise-peer-urls https://192.168.1.101:2380 \
 ```
 When the three nodes are all up, we should see message 'established a TCP streaming connection with peer 4469cb53324fe68b' on each node. Then we can test the cluster by **set** a value to one node (etcd1)
 ```shell
-curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd1:2379/v2/keys/foo -XPUT -d value=bar -v`
+curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd1:2379/v2/keys/foo -XPUT -d value=bar -v
 ```
 and **get** the value from a different node (etcd2 or etcd3)
 ```shell
-curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd2:2379/v2/keys/foo -XGET -v`
+curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd2:2379/v2/keys/foo -XGET -v
 ```
 Or we can use etcdctl
 ```shell
