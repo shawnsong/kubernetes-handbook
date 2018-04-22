@@ -1,6 +1,6 @@
 # Setup Kubernetes Cluster from Scratch
 
-1. Run set-env.sh
+1. Config the env.sh to adjust to your own environment
 This script will copy the env.sh to /usr/k8s/bin folder. It also adds etcd domain names to the /etc/hosts file. Modify the ip addresses of etcd servers accordingly.
 
 2. Run install-cfssl.sh

@@ -180,7 +180,7 @@ etcdctl --endpoints=https://etcd1:2379 --cacert=/etc/etcd/ssl/etcd-root-ca.pem -
 ### TL DR
 - Download & install cfssl
 ```shell
-kdir ~/bin
+mkdir ~/bin
 curl -s -L -o ~/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
 curl -s -L -o ~/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 chmod +x ~/bin/{cfssl,cfssljson}
