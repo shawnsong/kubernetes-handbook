@@ -14,7 +14,7 @@ Etcd cluster
 | 192.168.1.101	| etcd3     |
 
 ### 2. Run setup-env.sh
-[setup-env.sh](setup-env.sh) will copy the env.sh to /usr/k8s/bin folder. If the folder does not exist, it will create it. It also adds etcd domain names to the /etc/hosts file. Modify the ip addresses of etcd servers accordingly.
+[setup-env.sh](setup-env.sh) will copy the `env.sh` to `/usr/k8s/bin` folder. If the folder does not exist, it will create it. It also adds etcd domain names to the `/etc/hosts` file. Modify the ip addresses of etcd servers accordingly.
 
 ### 3. Run install-cfssl.sh
 We use cfssl to generate all certificates. [install-cfssl.sh](install-cfssl.sh) will download and install cfssl.
