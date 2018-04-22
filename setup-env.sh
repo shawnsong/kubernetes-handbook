@@ -2,6 +2,7 @@
 
 sudo mkdir -p /usr/k8s/bin
 sudo cp env.sh /usr/k8s/bin
+sudo chown -R $USER:$USER /user/k8s/bin
 
 cat <<EOF | sudo tee -a /etc/hosts
 192.168.1.102   etcd1

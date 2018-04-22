@@ -1,3 +1,10 @@
+# Setup Kubectl
+
+## Export environment variables
+```shell
+source /usr/k8s/bin/env.sh
+export KUBE_APISERVER="https://${MASTER_URL}:6443"
+```
 ## Download and install Kubectl
 ```shell
 curl -O -L https://dl.k8s.io/v1.9.3/kubernetes-client-linux-amd64.tar.gz 
