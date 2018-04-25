@@ -96,11 +96,11 @@ EOF
   --audit-policy-file=/etc/kubernetes/audit-policy.yaml \
   --event-ttl=1h \
   --logtostderr=true \
-  --v=6
+  --v=2
 ```
 
 Note:
 
  - *--insecure-bind-address is not available in 1.10*
- - kube-scheduler and kube-controller-manager are normally installed on the same with kube-apiserver so we can use insecure port for communication. However, I do not think this is possible since 1.10.
- - kubelet, kube-proxy, kubectl are connected via secured port. 
+ - kube-scheduler and kube-controller-manager are normally installed on the same machine with kube-apiserver so we can use insecure port for communication. However, I do not think this is possible since 1.10
+ - kubelet, kube-proxy, kubectl are connected via secured port
