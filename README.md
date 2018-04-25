@@ -32,3 +32,19 @@ CFSSL is Cloudflare's PKI and TLS toolkit. We use CFSSL to generate all certific
 ### 7.1 Setup API Server
 ### 7.2 Setup Controller Manger
 ### 7.3 Setup Scheduler
+### 7.4 Verify the Setup
+To verify every component is installed and configured correctly, we use `kubectl` to check the status of the cluster:
+```shell
+kubectl get componentstatuses
+
+# output should be similar to this
+NAME                 STATUS    MESSAGE              ERROR
+scheduler            Healthy   ok
+controller-manager   Healthy   ok
+etcd-2               Healthy   {"health": "true"}
+etcd-1               Healthy   {"health": "true"}
+etcd-0               Healthy   {"health": "true"}
+
+```
+
+## 8. API Server High-Availability
