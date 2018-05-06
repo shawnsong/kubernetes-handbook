@@ -52,7 +52,11 @@ etcd-0               Healthy   {"health": "true"}
 To make Kubernetes master nodes highly available, we need to setup a cluster for the master componenets. The Controller Manager and Scheduler components are using Master-Slave mode for high-availability. The leader voting algorithm is implemented by Kubernetes itself, in combined with Raft consensus algorithm provided by etcd.
 
 Hence, we only need to make the API Server highly available. To do that, we need to install a load-balancer, either HAProxy or Nginx, and make the load-balancer highly available. 
+
 #### 8.1.1 Setup HAProxy
+Please refer [load-balancer/setup-haproxy.md](setup-haproxy.md) to setup the HAProxy load balancer.
+
 #### 8.1.2 Setup Nginx
+Please refer [load-balancer/setup-nginx.md](setup-nginx.md) to setup a Nginx  load balancer.
 
 ### 8.2 Setup Keepalived

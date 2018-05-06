@@ -5,6 +5,28 @@
 sudo yum install haproxy -y
 ```
 
+## Configurations
+The /etc/haproxy/haproxy.cfg configuration file is divided into the following sections:
+
+* global
+
+  Defines global settings such as the syslog facility and level to use for logging, the maximum number of concurrent connections allowed, and how many processes to start in daemon mode.
+
+* defaults
+  Defines default settings for subsequent sections.
+
+* listen
+
+  Defines a complete proxy, implicitly including the frontend and backend components.
+
+* frontend
+  Defines the ports that accept client connections.
+
+* backend
+  Defines the servers to which the proxy forwards client connections.
+
+
+
 ## Configure HAProxy
 
 Add the following configuration into `/etc/haproxy/haproxy.cfg`
