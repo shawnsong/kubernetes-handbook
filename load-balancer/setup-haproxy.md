@@ -17,7 +17,7 @@ The /etc/haproxy/haproxy.cfg configuration file is divided into the following se
 
 * listen
 
-  Defines a complete proxy, implicitly including the frontend and backend components.
+  Defines a complete proxy, including the frontend and backend components.
 
 * frontend
   Defines the ports that accept client connections.
