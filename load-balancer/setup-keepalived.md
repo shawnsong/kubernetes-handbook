@@ -106,11 +106,62 @@ ip addr show
     inet6 fe80::17a6:9275:98fb:6f4/64 scope link
        valid_lft forever preferred_lft forever
 ```
-We can see there are two ip address bind to the network interface.
+We can see there are two ip address bind to the network interface. We can ping the virtual ip from a different server (etcd2). Please note that the virtual ip is in the same network with the master's real ip address. If we configure the virtual ip in a different network, i.e 192.168.100.101, then we cannot ping it from etcd2.
 
-Now if we stop keepalived on master, we should see the virtual ip will be *shifting* to the backup server.
+If we stop keepalived on master, the virtual ip will be *shifting* to the backup server. This can be verified by using above command on the backup server.
 
 > **Note**  
 > There should always be ONLY one server active as the master at any point in time. If the master is failed, the backup server with highest prority number will takeover the master role until the master has come back up. If more than one servers are configured with same priority number, then the server with highest ip address will be the master.
 
 ## Configure Load Balancing Using Keepalived in NAT Mode
+The next step is to setup Keepalived in NAT mode to implement a simple failover and load balancing configuration on two servers. Add the following content to the configure files.
+
+```shell
+virtual_server 192.168.100.101 80 {
+    delay_loop 6
+    lb_algo rr
+    lb_kind NAT
+    persistence_timeout 50
+    protocol TCP
+
+    real_server 192.168.1.101 80 {
+        weight 1
+        TCP_CHECK {
+        connect_port 80
+        connect_timeout 3
+      }
+    }
+
+    real_server 192.168.1.102 80 {
+        weight 1
+        TCP_CHECK {
+        connect_port 80
+        connect_timeout 3
+      }
+    }
+}
+
+virtual_server 192.168.100.101 443 {
+    delay_loop 6
+    lb_algo rr
+    lb_kind NAT
+    persistence_timeout 05
+    protocol TCP
+
+    real_server 192.168.1.101 443 {
+        weight 1
+        TCP_CHECK {
+        connect_port 443
+        connect_timeout 3
+      }
+    }
+
+    real_server 192.168.1.102 443 {
+        weight 1
+        TCP_CHECK {
+        connect_port 443
+        connect_timeout 3
+      }
+    }
+}
+```
