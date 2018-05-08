@@ -3,7 +3,6 @@
 There is not much to configure for this component. Just run below to start the scheduler component.
 
 
-
 ```shell
 # export environment variables
 source /usr/k8s/bin/env.sh
