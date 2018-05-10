@@ -77,3 +77,8 @@ kubectl config use-context kubernetes
 kubeconfig is saved in `~/.kube/config`
 
 
+## Check Cluster Status
+Once the Kubectl is configured, we should be able to check the cluster's status:
+```shell
+kubectl get componentstatuses
+```

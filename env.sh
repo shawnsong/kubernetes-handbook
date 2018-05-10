@@ -31,7 +31,7 @@ export CLUSTER_KUBERNETES_SVC_IP="10.254.0.1"
 export CLUSTER_DNS_SVC_IP="10.254.0.2"
 
 #  DNS domain name 
-export CLUSTER_DNS_DOMAIN="cluster.local."
+export CLUSTER_DNS_DOMAIN="cluster.local"
 
 # MASTER API Server 
 export MASTER_URL="k8s-api.virtual.local"

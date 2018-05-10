@@ -82,7 +82,6 @@ backend k8s-api-http
     server k8s-api-1 192.168.1.101:8080 check
     server k8s-api-2 192.168.1.102:8080 check
     server k8s-api-3 192.168.1.103:8080 check
-
 ```
 
 We can use this command to test our configuration file.
