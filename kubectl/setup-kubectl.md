@@ -17,7 +17,7 @@ export PATH=/usr/k8s/bin:$PATH
 
 ## Create admin certificates
 
-Because we could run kubectl on any machine (no necessarily on master nodes), hence, we we need to encrypt the network between kubectl and kube-api-server. 
+Because we could run kubectl on any machine (no necessarily on master nodes), hence, we need to encrypt the network between kubectl and kube-api-server. 
 
 
 ```shell

@@ -214,3 +214,9 @@ openssl x509 -in client.pem -text -noout
 ```
 - Bootstrap the cluster <br />
  See above
+
+### etcd commands
+```shell
+# Display all keys
+ETCDCTL_API=3 ./etcdctl get / --prefix --keys-only
+```
