@@ -1,8 +1,13 @@
+# IP and port of etcd cluster
 export ETCD1_IP="192.168.1.102"
 export ETCD2_IP="192.168.1.103"
 export ETCD3_IP="192.168.1.101"
-
 export ETCD_PORT=2379
+
+# IPs of master cluster
+export MASTER1_IP="192.168.1.101"
+export MASTER2_IP="192.168.1.102"
+export MASTER3_IP="192.168.1.103"
 
 # TLS Bootstrapping Token
 # $(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c32;)

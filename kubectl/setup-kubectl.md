@@ -3,7 +3,7 @@
 ## Export environment variables
 ```shell
 source /usr/k8s/bin/env.sh
-export KUBE_APISERVER="https://${MASTER_URL}:6443"
+export KUBE_APISERVER="https://${MASTER1_IP}:6443"
 ```
 ## Download and install Kubectl
 ```shell
@@ -53,25 +53,25 @@ sudo mv admin*.pem /etc/kubernetes/ssl/
 
 ## Use kubectl to generate kubeconfig file
 ```shell
-# setup cluster address
+# Configure the certificates and the cluster
 kubectl config set-cluster kubernetes \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \
   --server=${KUBE_APISERVER}
 
-# setup client side certificates
+# Configure client side certificates
 kubectl config set-credentials admin \
   --client-certificate=/etc/kubernetes/ssl/admin.pem \
   --embed-certs=true \
   --client-key=/etc/kubernetes/ssl/admin-key.pem \
   --token=${BOOTSTRAP_TOKEN}
 
-# create a new context
+# Create a new context
 kubectl config set-context kubernetes \
   --cluster=kubernetes \
   --user=admin
 
-# set default context
+# Set the context as default context
 kubectl config use-context kubernetes
 ```
 kubeconfig is saved in `~/.kube/config`
@@ -82,3 +82,6 @@ Once the Kubectl is configured, we should be able to check the cluster's status:
 ```shell
 kubectl get componentstatuses
 ```
+
+> **Note:** 
+  At the moment, `Kubectl` only points to a specific API server `https://MASTER1_IP:6443` to interact with the cluster. Once we have a high available cluster setup later, we will come back and make adjustments to the configuration.
