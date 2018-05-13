@@ -65,6 +65,10 @@ EOF
 *Note; BOOTSTRAP_TOKEN is defined in env.sh*
 
 ## Start kube-api-server
+We are going to setup a single node cluster to begin with. Once we can have a single node cluster setup, we can then easily extend it to a multi-node cluster.
+
+Run this command on node 192.168.1.101
+
 ```shell
 /usr/k8s/bin/kube-apiserver \
   --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
@@ -104,3 +108,4 @@ Note:
  - *--insecure-bind-address is not available in 1.10*
  - kube-scheduler and kube-controller-manager are normally installed on the same machine with kube-apiserver so we can use insecure port for communication. However, I do not think this is possible since 1.10
  - kubelet, kube-proxy, kubectl are connected via secured port
+

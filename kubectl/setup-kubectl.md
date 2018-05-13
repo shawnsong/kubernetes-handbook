@@ -1,11 +1,11 @@
 # Setup Kubectl
 
-## Export environment variables
+## Export Environment Variables
 ```shell
 source /usr/k8s/bin/env.sh
 export KUBE_APISERVER="https://${MASTER1_IP}:6443"
 ```
-## Download and install Kubectl
+## Download and Install Kubectl
 ```shell
 curl -O -L https://dl.k8s.io/v1.9.3/kubernetes-client-linux-amd64.tar.gz 
 tar -xzvf kubernetes-client-linux-amd64.tar.gz
@@ -15,7 +15,7 @@ sudo chown $USER:USER /usr/k8s/bin/kube*
 export PATH=/usr/k8s/bin:$PATH
 ```
 
-## Create admin certificates
+## Create Admin Certificates
 
 Because we could run kubectl on any machine (no necessarily on master nodes), hence, we need to encrypt the network between kubectl and kube-api-server. 
 
@@ -51,7 +51,7 @@ cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem \
 sudo mv admin*.pem /etc/kubernetes/ssl/
 ```
 
-## Use kubectl to generate kubeconfig file
+## Use kubectl to Generate kubeconfig File
 ```shell
 # Configure the certificates and the cluster
 kubectl config set-cluster kubernetes \
@@ -77,11 +77,22 @@ kubectl config use-context kubernetes
 kubeconfig is saved in `~/.kube/config`
 
 
-## Check Cluster Status
+## Verify kubectl Configuration
 Once the Kubectl is configured, we should be able to check the cluster's status:
 ```shell
 kubectl get componentstatuses
 ```
 
-> **Note:** 
-  At the moment, `Kubectl` only points to a specific API server `https://MASTER1_IP:6443` to interact with the cluster. Once we have a high available cluster setup later, we will come back and make adjustments to the configuration.
+> **Note:**  
+  At the moment, `Kubectl` only points to a specific API server `https://MASTER1_IP:6443` to interact with the cluster. This is enough for now because we are going to build a single node cluster at the first step, then we will extend the master to a high-available cluster. Once we have a proper cluster setup, we can continue the following steps.
+
+## Point kubectl to the HAProxy
+
+We can let `kubectl` points to the virtual IP of HAProxy directly: `192.168.1.201`, or we can use the hostname: `k8s-api.virtual.local`. 
+
+```shell
+# MASTER_URL is defined in env.sh
+export KUBE_APISERVER="https://${MASTER_URL}"
+kubectl config set-cluster kubernetes --server=${KUBE_APISERVER}
+```
+We removed the 6443 port number from the server URL because HAProxy will redirect HTTPS request to 6443.
