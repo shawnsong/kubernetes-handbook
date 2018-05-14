@@ -7,11 +7,19 @@ This is the details that is used in this guide:
 
 Etcd cluster
 
-| IP Address	| hostname  |
+| IP Address	| Hostname  |
 |---------------|-----------|
 | 192.168.1.102	| etcd1     |
 | 192.168.1.103	| etcd2     |
 | 192.168.1.101	| etcd3     |
+
+Master nodes
+
+| IP Address	| Role      |
+|---------------|-----------|
+| 192.168.1.101	| master1   |
+| 192.168.1.102	| master2   |
+| 192.168.1.103	| master3   |
 
 ## 2. Setup Environment Variables
 To do this, we need to run [setup-env.sh](setup-env.sh) script. This script will copy the `env.sh` to `/usr/k8s/bin` folder. If the folder does not exist, it will create it. It also adds etcd domain names to the `/etc/hosts` file. 
@@ -35,7 +43,7 @@ Please refer [setup-kubectl](kubectl/setup-kubectl.md) to setup Kubectl.
 
 ## 6. Setup Flannel
 
-Kubernetes runs a different network model than Docker does. The most fundamental difference is Kubernetes imposes a network model that NAT must NOT be used when container instances communicate with each other. Please find more details on the Kubernetes official website for the network model.
+Kubernetes runs a different network model than Docker does. The most fundamental difference is Kubernetes imposes a network model that NAT must NOT be used when container instances communicate with each other. Please find more details about the network model from the Kubernetes official website.
 
 Please refer [setup-flannel](flannel/setup-flannel.md) to setup flannel.
 
@@ -46,9 +54,13 @@ Kubernetes master contains three components: Kube API Server, Kube Controller Ma
 ### 7.1 Setup API Server
 
 ### 7.2 Setup Controller Manger
+
 ### 7.3 Setup Scheduler
+
 ### 7.4 Verify the Setup
+
 To verify every component is installed and configured correctly, we use `kubectl` to check the status of the cluster:
+
 ```shell
 kubectl get componentstatuses
 
@@ -63,6 +75,7 @@ etcd-0               Healthy   {"health": "true"}
 ```
 
 ## 8. API Server High-Availability
+
 ### 8.1 Setup Load Balancer
 To make Kubernetes master nodes highly available, we need to setup a cluster for the master componenets. The Controller Manager and Scheduler components are using Master-Slave mode for high-availability. The leader voting algorithm is implemented by Kubernetes itself, in combined with Raft consensus algorithm provided by etcd.
 

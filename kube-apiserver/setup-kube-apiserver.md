@@ -6,7 +6,7 @@ export NODE_IP=192.168.1.101  # current node ip
 source /usr/k8s/bin/env.sh
 ```
 
-## Install kube-apiserver
+## Install Kube-apiserver
 ```shell
 curl -L -O https://dl.k8s.io/v1.9.2/kubernetes-server-linux-amd64.tar.gz
 tar -xzvf kubernetes-server-linux-amd64.tar.gz
@@ -56,7 +56,8 @@ sudo mkdir -p /etc/kubernetes/ssl/
 sudo mv kubernetes*.pem /etc/kubernetes/ssl/
 ```
 ## Configure Token File
-The token will be used by clients of api-server. For example, when a *kubelet* starts, it sends a TLS Bootstrap request. api-server will check if the token sent by kubelet is same with token.csv. If they match, api-server will generate certificates for that kubelet.
+The token will be used by clients of api-server. For example, when a *kubelet* starts, it sends a TLS Bootstrap request. api-server will check if the token sent by kubelet is same with token.csv. If they match, api-server will generate certificates for that kubelet. The reason we use the bootstrap token is When we have a large number worker nodes, manually generating certificates for each kubelet is time consuming and hard to scale. Using this approach can automate this process.
+
 ```shell
 cat > token.csv <<EOF
 ${BOOTSTRAP_TOKEN},kubelet-bootstrap,10001,"system:kubelet-bootstrap"
@@ -64,10 +65,8 @@ EOF
 ```
 *Note; BOOTSTRAP_TOKEN is defined in env.sh*
 
-## Start kube-api-server
-We are going to setup a single node cluster to begin with. Once we can have a single node cluster setup, we can then easily extend it to a multi-node cluster.
-
-Run this command on node 192.168.1.101
+## Start Single Node API Server
+We are going to setup a single node cluster to begin with. Run this command on node master1
 
 ```shell
 /usr/k8s/bin/kube-apiserver \
@@ -103,9 +102,11 @@ Run this command on node 192.168.1.101
   --v=2
 ```
 
-Note:
+> **Note:**  
+> --insecure-bind-address is not available in 1.10  
+>
+> kube-scheduler and kube-controller-manager are normally installed on the same machine with kube-apiserver so we can use insecure port for communication. However, I do not think this is possible since 1.10  
+>
+> kubelet, kube-proxy, kubectl are connected via secured port  
 
- - *--insecure-bind-address is not available in 1.10*
- - kube-scheduler and kube-controller-manager are normally installed on the same machine with kube-apiserver so we can use insecure port for communication. However, I do not think this is possible since 1.10
- - kubelet, kube-proxy, kubectl are connected via secured port
-
+## Start API Server Cluster
