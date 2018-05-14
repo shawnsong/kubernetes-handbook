@@ -7,7 +7,7 @@ This is the details that is used in this guide:
 
 Etcd cluster
 
-| IP Address	| hostname	|
+| IP Address	| hostname  |
 |---------------|-----------|
 | 192.168.1.102	| etcd1     |
 | 192.168.1.103	| etcd2     |
@@ -23,13 +23,28 @@ CFSSL is Cloudflare's PKI and TLS toolkit. We use CFSSL to generate all certific
 
 ## 4. Setup etcd Cluster
 
+Etcd is a distributed key-value store written in Golang. It is used by Kubernetes to store ALLof the cluster's information and status. It is the most important component for a cluster. If your master nodes or worker nodes are failed, you might have a slow responding application, or the worst case, a failed application. However, if your data store is failed, you are pretty much done. 
+
+Please refer [setup-static-etcd-cluster](etcd/setup-static-etcd-cluster.md) to setup the etcd cluster.
+
 ## 5. Setup Kubectl
+
+Kubectl is a Command Line Interface (CLI) that is used to run commands against Kubernetes cluster. All commands are sent by Kubectl to API Servers.
+
+Please refer [setup-kubectl](kubectl/setup-kubectl.md) to setup Kubectl.
 
 ## 6. Setup Flannel
 
+Kubernetes runs a different network model than Docker does. The most fundamental difference is Kubernetes imposes a network model that NAT must NOT be used when container instances communicate with each other. Please find more details on the Kubernetes official website for the network model.
+
+Please refer [setup-flannel](flannel/setup-flannel.md) to setup flannel.
+
 ## 7. Setup Master Node
 
+Kubernetes master contains three components: Kube API Server, Kube Controller Manager and Kube Scheduler. Building a high available cluster is complicated and error proning. Hence, in this tutorial, a single node cluster will be built first. Once it is functional correctly, it can be easily extended to a cluster.
+
 ### 7.1 Setup API Server
+
 ### 7.2 Setup Controller Manger
 ### 7.3 Setup Scheduler
 ### 7.4 Verify the Setup
