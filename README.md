@@ -88,3 +88,6 @@ Please refer [load-balancer/setup-haproxy.md](setup-haproxy.md) to setup the HAP
 Please refer [load-balancer/setup-nginx.md](setup-nginx.md) to setup a Nginx  load balancer.
 
 ### 8.2 Setup Keepalived
+
+## 9. Setup Kubelet
+Kubelet is an agent that required on each worker node. It It works as a daemon that guarantees that containers are running and are running inside pods. It is similar to `systemd` in Linux.
