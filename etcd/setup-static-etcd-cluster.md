@@ -1,3 +1,5 @@
+# Setup etcd Cluster
+
 ## Introduction
 We are going to setup a 3-node static TLS secured etcd cluster by using self signed certificates. We have the following config in /etc/hosts in each node:
 
@@ -6,6 +8,15 @@ We are going to setup a 3-node static TLS secured etcd cluster by using self sig
 | 192.168.1.102	| etcd1     |
 | 192.168.1.103	| etcd2     |
 | 192.168.1.101	| etcd3     |
+
+## Install etcd
+Go to [https://github.com/coreos/etcd/releases](etcd)'s official release page and download the latest etcd version. This tutorial uses v3.2.9.
+
+```shell
+curl -O -L https://github.com/coreos/etcd/releases/download/v3.2.9/etcd-v3.2.9-linux-amd64.tar.gz
+tar -xzvf etcd-v3.2.9-linux-amd64.tar.gz -C etcd
+sudo cp etcd/etcd-v3.2.9-linux-amd64/etcd* /usr/k8s/bin
+```
 
 Before we setup a TLS secured cluster, we can quickly bootstrap a cluster without TLS to make sure the network is not blocked by firewalls on each node. Start etcd with following options on each node:
 ```shell

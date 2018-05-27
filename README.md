@@ -1,5 +1,12 @@
 # Setup Kubernetes Cluster from Scratch
 
+## Component Versions and Cluster Environment
+- Centos 7.3
+- Kubernetes 1.9.2
+- Docker 1.13.1
+- etcd 3.2.9
+- flannel v0.10.0
+
 ## 1. Modify the env.sh to Align with Your Own Environment
 [env.sh](env.sh) contains all the environment variables that we are going to use throught the whole kubernetes cluster setup process. **Please be careful!**
 
@@ -20,6 +27,8 @@ Master nodes
 | 192.168.1.101	| master1   |
 | 192.168.1.102	| master2   |
 | 192.168.1.103	| master3   |
+
+
 
 ## 2. Setup Environment Variables
 To do this, we need to run [setup-env.sh](setup-env.sh) script. This script will copy the `env.sh` to `/usr/k8s/bin` folder. If the folder does not exist, it will create it. It also adds etcd domain names to the `/etc/hosts` file. 
@@ -85,9 +94,13 @@ Hence, we only need to make the API Server highly available. To do that, we need
 Please refer [load-balancer/setup-haproxy.md](setup-haproxy.md) to setup the HAProxy load balancer.
 
 #### 8.1.2 Setup Nginx
-Please refer [load-balancer/setup-nginx.md](setup-nginx.md) to setup a Nginx  load balancer.
+Please refer [load-balancer/setup-nginx.md](setup-nginx.md) to setup a Nginx load balancer.
 
 ### 8.2 Setup Keepalived
 
 ## 9. Setup Kubelet
-Kubelet is an agent that required on each worker node. It It works as a daemon that guarantees that containers are running and are running inside pods. It is similar to `systemd` in Linux.
+Kubelet is an agent that required on each worker node. It works as a daemon that guarantees that containers are running inside pods. It is similar to `systemd` in Linux. Kubelet only 'monitors' containers started by Kubelet. User started containers are not monitored.
+
+
+Please refer[kubelet/setup-kubelet.md](setup-kubelet.md) to setup Kubelet on worker nodes.
+
