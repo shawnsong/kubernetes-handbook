@@ -14,6 +14,7 @@ Go to [https://github.com/coreos/etcd/releases](etcd)'s official release page an
 
 ```shell
 curl -O -L https://github.com/coreos/etcd/releases/download/v3.2.9/etcd-v3.2.9-linux-amd64.tar.gz
+
 tar -xzvf etcd-v3.2.9-linux-amd64.tar.gz -C etcd
 sudo cp etcd/etcd-v3.2.9-linux-amd64/etcd* /usr/k8s/bin
 ```

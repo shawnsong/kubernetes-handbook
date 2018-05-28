@@ -7,11 +7,6 @@
 - etcd 3.2.9
 - flannel v0.10.0
 
-## 1. Modify the env.sh to Align with Your Own Environment
-[env.sh](env.sh) contains all the environment variables that we are going to use throught the whole kubernetes cluster setup process. **Please be careful!**
-
-This is the details that is used in this guide:
-
 Etcd cluster
 
 | IP Address	| Hostname  |
@@ -28,6 +23,9 @@ Master nodes
 | 192.168.1.102	| master2   |
 | 192.168.1.103	| master3   |
 
+
+## 1. Modify the env.sh to Align with Your Own Environment
+[env.sh](env.sh) contains all the environment variables that we are going to use throught the whole kubernetes cluster setup process. **Please be careful!**
 
 
 ## 2. Setup Environment Variables
@@ -62,6 +60,13 @@ Kubernetes master contains three components: Kube API Server, Kube Controller Ma
 
 ### 7.1 Setup API Server
 
+The functionality of Kubernetes API Server is as it is named. Users send commands to the cluster using Kubectl, which in turns sends all commands to the API Servers. When a command is sent to the API Server, it normally goes through 3 steps:
+- Authentication
+- Authorization
+- Admission Control
+
+Authentication and Authorization are standard access controls. Some features require Admission Controllers to be enabled to support the features. For example, `DenyEscalatingExec` can be turned on so users cannot run `exec` or `attach` against containers.
+
 ### 7.2 Setup Controller Manger
 
 ### 7.3 Setup Scheduler
@@ -80,7 +85,6 @@ controller-manager   Healthy   ok
 etcd-2               Healthy   {"health": "true"}
 etcd-1               Healthy   {"health": "true"}
 etcd-0               Healthy   {"health": "true"}
-
 ```
 
 ## 8. API Server High-Availability
@@ -97,10 +101,19 @@ Please refer [load-balancer/setup-haproxy.md](setup-haproxy.md) to setup the HAP
 Please refer [load-balancer/setup-nginx.md](setup-nginx.md) to setup a Nginx load balancer.
 
 ### 8.2 Setup Keepalived
+Please refer [load-balancer/setup-keepalived](keep-alived.md) to setup Keepalived.
 
-## 9. Setup Kubelet
+### 8.3 Setup High Available Controller Manger and Scheduler
+
+## 9. Deploy Worker Node
+Kubernetes worker node requires these component:
+- kubelet
+- docker
+- flannel
+- kube-proxy
+
+### 9.1 Setup Kubelet
 Kubelet is an agent that required on each worker node. It works as a daemon that guarantees that containers are running inside pods. It is similar to `systemd` in Linux. Kubelet only 'monitors' containers started by Kubelet. User started containers are not monitored.
 
-
-Please refer[kubelet/setup-kubelet.md](setup-kubelet.md) to setup Kubelet on worker nodes.
+Please refer [kubelet/setup-kubelet.md](setup-kubelet.md) to setup Kubelet on worker nodes.
 
