@@ -109,6 +109,6 @@ We are going to setup a single node cluster to begin with. Run this command on n
 >
 > kubelet, kube-proxy, kubectl are connected via secured port  
 
-## Start API Server Cluster
+## Setup API Server Cluster
 
-Start API server on each of the master node. 
+API Server is a dependent component so we just start API server on each of the master node. API Server's high-availability is guaranteed by Keepalived and HAProxy. When we setup Keepalived, we bind a virtual IP `192.168.1.201` to one of the master node `192.168.1.101`. If this master dies, this virtual IP will be shifting to the one with the highest priority value among the rest master nodes in the cluster. We have already binded our domain name `k8s-api.virtual.local` to the virtual IP in the shell [setup-env](setup-env.sh). In this case, we always have a valid API Server if no more than 1/2 of the master nodes die.

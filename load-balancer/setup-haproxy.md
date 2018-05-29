@@ -94,4 +94,4 @@ Start HAProxy
 sudo systemctl start haproxy
 ```
 
-Then we can visit `localhost:9000/stats` to see check the status of different servers.
+Then we can visit `localhost:9000/stats` to check the status of different servers.
