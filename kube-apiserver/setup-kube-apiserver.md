@@ -110,3 +110,5 @@ We are going to setup a single node cluster to begin with. Run this command on n
 > kubelet, kube-proxy, kubectl are connected via secured port  
 
 ## Start API Server Cluster
+
+Start API server on each of the master node. 
