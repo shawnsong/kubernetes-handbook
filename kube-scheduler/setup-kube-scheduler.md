@@ -15,7 +15,7 @@ source /usr/k8s/bin/env.sh
 ```
 
 ## Point Scheduler to the HAProxy
-We can let `kube-controller-manager` points to the virtual IP of HAProxy directly: `192.168.1.201`, or we can use the hostname: `k8s-api.virtual.local`. 
+We can let `kube-scheduler` points to the virtual IP of HAProxy directly: `192.168.1.201`, or we can use the hostname: `k8s-api.virtual.local`. 
 
 ```shell
 # MASTER_URL is defined in env.sh

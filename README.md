@@ -23,9 +23,16 @@ Master nodes
 | 192.168.1.102	| master2   |
 | 192.168.1.103	| master3   |
 
+Disable firewalld on all servers:
+```shell
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+```
+We will turn the firewalld back on once we are more familiar with each components and have cluster running. Before reaching that point, it would be a lot easier to test all different components and setup a cluster without having a firewall interrupting the process.
+
 
 ## 1. Modify the env.sh to Align with Your Own Environment
-[env.sh](env.sh) contains all the environment variables that we are going to use throught the whole kubernetes cluster setup process. **Please be careful!**
+[env.sh](env.sh) contains all the environment variables that we are going to use throught the whole Kubernetes cluster setup process. **Please be careful!**
 
 
 ## 2. Setup Environment Variables
@@ -69,7 +76,15 @@ Authentication and Authorization are standard access controls. Some features req
 
 ### 7.2 Setup Controller Manger
 
+Kubernetes Controller Manager is a Watch Dog that monitors the state of the cluster. It constantly checks the state of the entire clustser and makes it aligned with the desired state if they are different. For example, a pod requires 3 replicas running at any time. If any of the replica failed, the Controller Manager will identify this broken state and will try to start another replica to make it 3. The Controller Manager issues commands to the cluster via API Server.
+
+Please refer [setup-kube-controller-manager](kube-controller-manager/setup-kube-controller-manager.md) to setup the Controller Manager.
+
 ### 7.3 Setup Scheduler
+
+Kubernetes Scheduler is the resource scheduler of the cluster. The scheduler determines where Pods/Containers should be running on.
+
+Please refer [setup-kube-scheduler](kube-scheduler/setup-kube-scheduler.md) to setup the Scheduler
 
 ### 7.4 Verify the Setup
 
@@ -95,13 +110,13 @@ To make Kubernetes master nodes highly available, we need to setup a cluster for
 Hence, we only need to make the API Server highly available. To do that, we need to install a load-balancer, either HAProxy or Nginx, and make the load-balancer highly available. 
 
 #### 8.1.1 Setup HAProxy
-Please refer [load-balancer/setup-haproxy.md](setup-haproxy.md) to setup the HAProxy load balancer.
+Please refer [setup-haproxy](load-balancer/setup-haproxy.md) to setup the HAProxy load balancer.
 
 #### 8.1.2 Setup Nginx
-Please refer [load-balancer/setup-nginx.md](setup-nginx.md) to setup a Nginx load balancer.
+Please refer [setup-nginx](load-balancer/setup-nginx.md) to setup a Nginx load balancer.
 
 ### 8.2 Setup Keepalived
-Please refer [load-balancer/setup-keepalived](keep-alived.md) to setup Keepalived.
+Please refer [keep-alived](load-balancer/setup-keepalived.md) to setup Keepalived.
 
 ### 8.3 Setup High Available Controller Manger and Scheduler
 
@@ -115,5 +130,5 @@ Kubernetes worker node requires these component:
 ### 9.1 Setup Kubelet
 Kubelet is an agent that required on each worker node. It works as a daemon that guarantees that containers are running inside pods. It is similar to `systemd` in Linux. Kubelet only 'monitors' containers started by Kubelet. User started containers are not monitored.
 
-Please refer [kubelet/setup-kubelet.md](setup-kubelet.md) to setup Kubelet on worker nodes.
+Please refer [setup-kubelet](kubelet/setup-kubelet.md) to setup Kubelet on worker nodes.
 
