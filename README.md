@@ -144,3 +144,7 @@ Kubelet is an agent that required on each worker node. It works as a daemon that
 
 Please refer [setup-kubelet](kubelet/setup-kubelet.md) to setup Kubelet on worker nodes.
 
+## 10. Wrap Up
+Now we have a production like highly available cluster running. We have one more step to go: enable the firewall. The OS used in this tutorial is CENTOS 7.4, so we use firewalld to config the firewall.
+
+Please refer [enable-firewall](wrap-up/enable-firewall.md) to enable the firewall. 
