@@ -145,6 +145,12 @@ Kubelet is an agent that required on each worker node. It works as a daemon that
 Please refer [setup-kubelet](kubelet/setup-kubelet.md) to setup Kubelet on worker nodes.
 
 ## 10. Wrap Up
+### 10.1 Enable Firewall on Master Nodes
 Now we have a production like highly available cluster running. We have one more step to go: enable the firewall. The OS used in this tutorial is CENTOS 7.4, so we use firewalld to config the firewall.
 
 Please refer [enable-firewall](wrap-up/enable-firewall.md) to enable the firewall. 
+
+### 10.2 Setup Daemon for Master Compnents
+There are two ways to keep our master components (etcd, Controller, API Server, Scheduler) running all the time: first is to run all components in containers and let `Kubelet` to guarantee their running state. The second way is to make each component as a Linux Service and use Linux `systemd` to manage them. Using Kubelet will introduce 'Watching the watchers' issue (who is going to manage the state of Kubelet?), but it is more or less OS dependent. In This tutorial, we are going to make all components as services and let systemd to manage them.
+
+Please refer [setup-services](wrap-up/setup-services.md) for the setup.

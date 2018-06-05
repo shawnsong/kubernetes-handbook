@@ -1,5 +1,3 @@
-# Wrap Up
-
 ## Enable Firewalls
 So far, we have our firewall disabled on all our master nodes so it does not disturb our setup process. It is time to turn it on.
 
