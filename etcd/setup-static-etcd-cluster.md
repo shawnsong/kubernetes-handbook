@@ -230,5 +230,6 @@ openssl x509 -in client.pem -text -noout
 ### etcd commands
 ```shell
 # Display all keys
-ETCDCTL_API=3 ./etcdctl get / --prefix --keys-only
+export ETCDCTL_API=3 
+etcdctl --endpoints=https://etcd1:2379 --cacert=/etc/etcd/ssl/etcd-root-ca.pem --cert=./client.pem --key=./client-key.pem get / --prefix --keys-only
 ```
