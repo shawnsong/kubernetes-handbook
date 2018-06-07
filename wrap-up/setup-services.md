@@ -14,18 +14,21 @@ After=network.target
 After=etcd.service
 
 [Service]
+Environment=NODE_IP=192.168.1.101
+EnvironmentFile=/usr/k8s/bin/environment-file.txt
+EnvironmentFile=/usr/k8s/bin/apiserver
 ExecStart=/usr/k8s/bin/kube-apiserver \
   --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
-  --advertise-address=${NODE_IP} \
+  --advertise-address=192.168.1.101 \
   --bind-address=0.0.0.0 \
-  --insecure-bind-address=${NODE_IP} \
+  $KUBE_API_ADDRESS \
   --authorization-mode=Node,RBAC \
   --runtime-config=rbac.authorization.k8s.io/v1alpha1 \
   --kubelet-https=true \
   --enable-bootstrap-token-auth \
   --token-auth-file=/etc/kubernetes/token.csv \
-  --service-cluster-ip-range=${SERVICE_CIDR} \
-  --service-node-port-range=${NODE_PORT_RANGE} \
+  $KUBE_SERVICE_ADDRESSES \
+  $KUBE_SERVICE_NODE_PORT_RANGE \
   --tls-cert-file=/etc/kubernetes/ssl/kubernetes.pem \
   --tls-private-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
   --client-ca-file=/etc/kubernetes/ssl/ca.pem \
@@ -33,7 +36,7 @@ ExecStart=/usr/k8s/bin/kube-apiserver \
   --etcd-cafile=/etc/kubernetes/ssl/ca.pem \
   --etcd-certfile=/etc/kubernetes/ssl/kubernetes.pem \
   --etcd-keyfile=/etc/kubernetes/ssl/kubernetes-key.pem \
-  --etcd-servers=${ETCD_ENDPOINTS} \
+  --etcd-servers=https://192.168.1.101:2379,https://192.168.1.102:2379,https://192.168.1.103:2379 \
   --enable-swagger-ui=true \
   --allow-privileged=true \
   --apiserver-count=2 \
