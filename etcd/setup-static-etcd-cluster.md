@@ -121,7 +121,8 @@ If we can successfully perform above tests, we are safe to move on to next steps
 We use below command to start the cluster
 etcd1 (192.168.1.102)
 ```shell
-etcd --name etcd1 --initial-advertise-peer-urls https://192.168.1.102:2380 \
+etcd --name etcd1 \
+  --initial-advertise-peer-urls https://192.168.1.102:2380 \
   --listen-peer-urls https://192.168.1.102:2380 \
   --listen-client-urls https://192.168.1.102:2379,https://127.0.0.1:2379 \
   --advertise-client-urls https://192.168.1.102:2379 \
@@ -140,7 +141,8 @@ etcd --name etcd1 --initial-advertise-peer-urls https://192.168.1.102:2380 \
 ```
 etcd2 (192.168.1.103)
 ```shell
-etcd --name etcd2 --initial-advertise-peer-urls https://192.168.1.103:2380 \
+etcd --name etcd2 \
+  --initial-advertise-peer-urls https://192.168.1.103:2380 \
   --listen-peer-urls https://192.168.1.103:2380 \
   --listen-client-urls https://192.168.1.103:2379,https://127.0.0.1:2379 \
   --advertise-client-urls https://192.168.1.103:2379 \
@@ -159,7 +161,8 @@ etcd --name etcd2 --initial-advertise-peer-urls https://192.168.1.103:2380 \
 ```
 etcd3 (192.168.1.101)
 ```shell
-etcd --name etcd3 --initial-advertise-peer-urls https://192.168.1.101:2380 \
+etcd --name etcd3 \
+  --initial-advertise-peer-urls https://192.168.1.101:2380 \
   --listen-peer-urls https://192.168.1.101:2380 \
   --listen-client-urls https://192.168.1.101:2379,https://127.0.0.1:2379 \
   --advertise-client-urls https://192.168.1.101:2379 \

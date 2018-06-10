@@ -2,8 +2,51 @@
 
 The recommended place for user generated systemd files is `/etc/systemd/system/` folder. All systemd files in this tutorial will be placed inside this folder.
 
-### Create systemd for etcd
+### Create `systemd` for etcd
+There are many arguments need to be passed in when etcd is started. To keep the `systemd` file short and clean, it is better to store the environment configurations at a seperate place. There are two ways to setup the configurations. The first way is to use Linux environment variables. All variable names start with `ETCD_`, then the variable names with dashes replaced with underscores. For example, environment variable of `--name` is `ETCD_NAME`. The name of `--listen-client-urls` is `ETCD_LISTEN_CLIENT_URLS` etc. The second way to store the parameters is to use a seperate file. In this tutorial, we are going to use files to store start up parameters for all Kubernetes cluster components.
 
+Create etcd environment file `etcd` in `/usr/k8s/bin/`. Please refer [etcd](environment/etcd) as an example.
+
+Create the etcd systemd file `etcd.service` in `/etc/systemd/system/` with below content:
+
+```shell
+[Unit]
+Description=etcd Server
+After=network.target
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/coreos
+
+[Service]
+Type=notify
+WorkingDirectory=$WORKING_DIRECTORY
+ExecStart=/usr/k8s/bin/etcd \
+  $NODE_NAME\
+  --initial-advertise-peer-urls https://192.168.1.101:2380 \
+  --listen-peer-urls https://192.168.1.101:2380 \
+  --listen-client-urls https://192.168.1.101:2379,https://127.0.0.1:2379 \
+  --advertise-client-urls https://192.168.1.101:2379 \
+  --initial-cluster-token etcd-cluster-1 \
+  --initial-cluster etcd1=https://192.168.1.102:2380,etcd2=https://192.168.1.103:2380,etcd3=https://192.168.1.101:2380 \
+  --initial-cluster-state new \
+  --cert-file /etc/etcd/ssl/server.pem \
+  --key-file /etc/etcd/ssl/server-key.pem \
+  --client-cert-auth=true \
+  --trusted-ca-file /etc/etcd/ssl/etcd-root-ca.pem \
+  --peer-cert-file=/etc/etcd/ssl/etcd3.pem \
+  --peer-key-file=/etc/etcd/ssl/etcd3-key.pem \
+  --peer-client-cert-auth=true \
+  --peer-trusted-ca-file=/etc/etcd/ssl/etcd-root-ca.pem \
+  --data-dir /var/lib/etcd
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+```
 
 ### Create systemd for API Server
 ```shell
