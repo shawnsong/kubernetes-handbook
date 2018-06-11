@@ -1,0 +1,24 @@
+###
+# kubernetes system config
+#
+# The following values are used to configure the kube-controller-manager
+###
+
+# The IP address on which to listen for the --secure-port port
+# The associated interface(s) must be reachable by the rest of the cluster, and by CLI/web clients
+# This value is set to 127.0.0.1  because API Server and Controller Manager are expected on the same machine
+# This argument is deprecated in 1.10.
+BIND_ADDRESS="--address=127.0.0.1"
+
+# CIDR Range for Services. Requires --allocate-node-cidrs to be true
+KUBE_SERVICE_ADDRESSES="--allocate-node-cidrs=true --service-cluster-ip-range=10.254.0.0/16"
+
+# CIDR Range for Pods in cluster. Requires --allocate-node-cidrs to be true
+KUBE_CLUSTER_CIDR="--cluster-cidr=172.30.0.0/16"
+
+
+# Certificates used by Controlelr Manager
+KUBE_CLUSTER_CERTS="--cluster-signing-cert-file=/etc/kubernetes/ssl/ca.pem --cluster-signing-key-file=/etc/kubernetes/ssl/ca-key.pem --service-account-private-key-file=/etc/kubernetes/ssl/ca-key.pem --root-ca-file=/etc/kubernetes/ssl/ca.pem"
+
+# Other parameters
+KUBE_CONTROLLER_MANAGER_ARGS="--cluster-name=kubernetes --leader-elect=true"

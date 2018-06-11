@@ -66,22 +66,22 @@ backend k8s-api-https
     server k8s-api-3 192.168.1.103:6443 check
 
 ############## Configure HAProxy Unsecure Frontend #############
-frontend k8s-api-http-proxy
-    bind :80
-    mode tcp
-    option tcplog
-    default_backend k8s-api-http
+#frontend k8s-api-http-proxy
+#    bind :80
+#    mode tcp
+#    option tcplog
+#    default_backend k8s-api-http
 
 ############## Configure HAProxy Unsecure Backend #############
-backend k8s-api-http
-    mode tcp
-    option tcplog
-    option tcp-check
-    balance roundrobin
-    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
-    server k8s-api-1 192.168.1.101:8080 check
-    server k8s-api-2 192.168.1.102:8080 check
-    server k8s-api-3 192.168.1.103:8080 check
+#backend k8s-api-http
+#    mode tcp
+#    option tcplog
+#    option tcp-check
+#    balance roundrobin
+#    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
+#    server k8s-api-1 192.168.1.101:8080 check
+#    server k8s-api-2 192.168.1.102:8080 check
+#    server k8s-api-3 192.168.1.103:8080 check
 ```
 
 We can use this command to test our configuration file.

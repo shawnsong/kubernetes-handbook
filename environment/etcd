@@ -2,7 +2,7 @@
 # etcd config
 #
 # The following values are used to configure the secured etcd cluster
-#
+###
 
 # The name of the node in the cluster
 NODE_NAME="--name etcd3"

@@ -2,10 +2,10 @@
 # kubernetes system config
 #
 # The following values are used to configure the kube-apiserver
-#
+###
 
 # The address on the local server to listen to.
-KUBE_API_INSECURE_ADDRESS="--insecure-bind-address=192.168.1.101"
+KUBE_API_INSECURE_ADDRESS="--insecure-bind-address=127.0.0.1"
 
 # The IP address on which to advertise the apiserver to members of the cluster. This address must be reachable 
 # by the rest of the cluster. If blank, the --bind-address will be used. 

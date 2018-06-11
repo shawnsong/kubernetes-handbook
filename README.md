@@ -150,7 +150,7 @@ Now we have a production like highly available cluster running. We have one more
 
 Please refer [enable-firewall](wrap-up/enable-firewall.md) to enable the firewall. 
 
-### 10.2 Setup Daemon for Master Compnents
+### 10.2 Setup `systemd` for Master Compnents
 There are two ways to keep our master components (etcd, Controller, API Server, Scheduler) running all the time: first is to run all components in containers and let `Kubelet` to guarantee their running state. The second way is to make each component as a Linux Service and use Linux `systemd` to manage them. Using Kubelet will introduce 'Watching the watchers' issue (who is going to manage the state of Kubelet?), but it is more or less OS dependent. In This tutorial, we are going to make all components as services and let systemd to manage them.
 
 Please refer [setup-services](wrap-up/setup-services.md) for the setup.

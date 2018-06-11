@@ -73,7 +73,7 @@ We are going to setup a single node cluster to begin with. Run this command on n
   --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
   --advertise-address=${NODE_IP} \
   --bind-address=0.0.0.0 \
-  --insecure-bind-address=${NODE_IP} \
+  --insecure-bind-address=127.0.0.1 \
   --authorization-mode=Node,RBAC \
   --runtime-config=rbac.authorization.k8s.io/v1alpha1 \
   --kubelet-https=true \
