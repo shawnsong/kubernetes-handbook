@@ -3,9 +3,9 @@
 The recommended place for user generated systemd files is `/etc/systemd/system/` folder. All systemd files in this tutorial will be placed inside this folder.
 
 ### Create `systemd` for etcd
-There are many arguments need to be passed in when etcd is started. To keep the `systemd` file short and clean, it is better to store the environment configurations at a seperate place. There are two ways to setup the configurations. The first way is to use Linux environment variables. All variable names start with `ETCD_`, then the variable names with dashes replaced with underscores. For example, environment variable of `--name` is `ETCD_NAME`. The name of `--listen-client-urls` is `ETCD_LISTEN_CLIENT_URLS` etc. The second way to store the parameters is to use a seperate file. In this tutorial, we are going to use files to store start up parameters for all Kubernetes cluster components.
+There are many arguments need to be passed in during etcd bootstrap. To keep the `systemd` file short and clean, it is better to store the environment configurations at a seperate place. There are two ways to store the configurations. The first way is to use system environment variables. There is a easy-to-remember naming convention for etcd environment variables. The variable names start with `ETCD_`, followed by variable names with dashes replaced with underscores. For example, the variable name of `--name` is `ETCD_NAME`; the variable name of `--listen-client-urls` is `ETCD_LISTEN_CLIENT_URLS` and etc. The second way to store the parameters is to store them in a seperate file and pass the file to `systemd`. In this tutorial, we are going to use files to store bootstrap arguments for all Kubernetes cluster components.
 
-Create etcd environment file `etcd` in `/usr/k8s/bin/env`. Please refer [etcd](environment/etcd) as an example.
+Create etcd environment file `etcd` in `/usr/k8s/bin/env`. Please refer [etcd](../environment/etcd) as an example.
 
 Create the etcd systemd file `etcd.service` in `/etc/systemd/system/` with below content:
 
@@ -51,7 +51,7 @@ WantedBy=multi-user.target
 ### Create systemd for API Server
 Similar to etcd, it is better to create a seperate file to store parameters for API Server bootstrap.
 
-Please refer [apiserver](environment/apiserver) as an example.
+Please refer [apiserver](../environment/apiserver) as an example.
 
 ```shell
 [Unit]
@@ -88,4 +88,57 @@ WantedBy=multi-user.target
 
 ### Create `systemd` for Controller Manager
 
+```shell
+[Unit]
+Description=Kubernetes Controller Manager
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+After=etcd.service
+After=kube-api-server.service
+
+[Service]
+EnvironmentFile=/usr/k8s/bin/env/shared-config
+EnvironmentFile=/usr/k8s/bin/env/controller-manager
+ExecStart=/usr/k8s/bin/kube-controller-manager \
+  $KUBE_MASTER \
+  $BIND_ADDRESS \
+  $KUBE_SERVICE_ADDRESSES \
+  $KUBE_CLUSTER_CIDR \
+  $KUBE_CLUSTER_CERTS \
+  $KUBE_CONTROLLER_MANAGER_ARGS \
+  $KUBE_LOG_LEVEL
+
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+```
+
 ### Create `systemd` for Scheduler
+
+```shell
+[Unit]
+Description=Kubernetes Scheduler
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+After=etcd.service
+After=kube-api-server.service
+
+[Service]
+EnvironmentFile=/usr/k8s/bin/env/shared-config
+EnvironmentFile=/usr/k8s/bin/env/scheduler
+ExecStart=/usr/k8s/bin/kube-scheduler \
+  $BIND_ADDRESS \
+  $KUBE_MASTER \
+  $KUBE_SCHEDULER_ARGS \
+  $KUBE_LOG_LEVEL
+
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+```

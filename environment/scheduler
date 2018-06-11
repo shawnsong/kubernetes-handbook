@@ -1,0 +1,9 @@
+###
+# kubernetes system config
+#
+# The following values are used to configure the kube-scheduler
+###
+
+BIND_ADDRESS="--address=127.0.0.1"
+
+KUBE_SCHEDULER_ARGS="--leader-elect=true"
