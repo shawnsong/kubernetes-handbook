@@ -1,0 +1,57 @@
+###
+# etcd config
+#
+# The following values are used to configure the secured etcd cluster
+#
+
+# The name of the node in the cluster
+NODE_NAME="--name etcd1"
+
+# The working directory of the cluster
+ETCD_WORKING_DIRECTORY="/var/lib/etcd/"
+
+# List of this member's peer URLs to advertise to the rest of the cluster
+ETCD_INITIAL_ADVERTISE_PEER_URLS="--initial-advertise-peer-urls https://192.168.1.101:2380"
+
+# This flag tells the etcd to accept incoming requests from its peers on the specified scheme://IP:port combinations.
+# If 0.0.0.0 is specified as the IP, etcd listens to the given port on all interfaces. 
+# If an IP address is given as well as a port, etcd will listen on the given port and interface. 
+# Multiple URLs may be used to specify a number of addresses and ports to listen on. 
+# The etcd will respond to requests from any of the listed addresses and ports.
+ETCD_LISTEN_PEER_URLS="--listen-peer-urls https://192.168.1.101:2380"
+
+# Similary to peer urls, but this flag is to accept incoming requests from clients
+ETCD_LISTEN_CLIENT_URLS="--listen-client-urls https://192.168.1.101:2379,https://127.0.0.1:2379"
+
+# List of this member's client URLs to advertise to the rest of the cluster. These URLs can contain domain names.
+# Example: https://10.0.0.1:2379,https://etcd-cluster.com:2379
+ETCD_ADVERTISE_CLIENT_URLS="--advertise-client-urls https://192.168.1.101:2379,https://localhost:2379"
+
+# The initial unique token of the cluster during bootstrap
+ETCD_INITIAL_CLUSTER_TOKEN="--initial-cluster-token etcd-cluster-1"
+
+# The URLs specified in initial-cluster are the advertised peer URLs.
+# i.e. they should match the value of initial-advertise-peer-urls on the respective nodes.
+ETCD_INITIAL_CLUSTER="--initial-cluster etcd1=https://192.168.1.102:2380,etcd2=https://192.168.1.103:2380,etcd3=https://192.168.1.101:2380"
+
+# The initial cluster state
+ETCD_INITIAL_CLUSTER_STATE="--initial-cluster-state new"
+
+# TLS certificates
+ETCD_CERT_FILE="--cert-file /etc/etcd/ssl/server.pem"
+ETCD_KEY_FILE="--key-file /etc/etcd/ssl/server-key.pem"
+
+# Enable client auth
+ETCD_CLIENT_CERT_AUTH="--client-cert-auth=true"
+
+# Root ca file
+ETCD_TRUSTED_CA_FILE="--trusted-ca-file /etc/etcd/ssl/etcd-root-ca.pem"
+
+# Peer certificates
+ETCD_PEER_CERT_FILE="--peer-cert-file=/etc/etcd/ssl/etcd1.pem"
+ETCD_PEER_KEY_FILE="--peer-key-file=/etc/etcd/ssl/etcd3-key.pem"
+ETCD_PEER_CLIENT_CERT_AUTH="--peer-client-cert-auth=true"
+ETCD_PEER_TRUSTED_CA_FILE="--peer-trusted-ca-file=/etc/etcd/ssl/etcd-root-ca.pem"
+
+
+ETCD_DATA_DIR="--data-dir /var/lib/etcd"

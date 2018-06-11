@@ -19,33 +19,32 @@ Documentation=https://github.com/coreos
 
 [Service]
 Type=notify
+EnvironmentFile=/usr/k8s/bin/etcd
 WorkingDirectory=$WORKING_DIRECTORY
 ExecStart=/usr/k8s/bin/etcd \
-  $NODE_NAME\
-  --initial-advertise-peer-urls https://192.168.1.101:2380 \
-  --listen-peer-urls https://192.168.1.101:2380 \
-  --listen-client-urls https://192.168.1.101:2379,https://127.0.0.1:2379 \
-  --advertise-client-urls https://192.168.1.101:2379 \
-  --initial-cluster-token etcd-cluster-1 \
-  --initial-cluster etcd1=https://192.168.1.102:2380,etcd2=https://192.168.1.103:2380,etcd3=https://192.168.1.101:2380 \
-  --initial-cluster-state new \
-  --cert-file /etc/etcd/ssl/server.pem \
-  --key-file /etc/etcd/ssl/server-key.pem \
-  --client-cert-auth=true \
-  --trusted-ca-file /etc/etcd/ssl/etcd-root-ca.pem \
-  --peer-cert-file=/etc/etcd/ssl/etcd3.pem \
-  --peer-key-file=/etc/etcd/ssl/etcd3-key.pem \
-  --peer-client-cert-auth=true \
-  --peer-trusted-ca-file=/etc/etcd/ssl/etcd-root-ca.pem \
-  --data-dir /var/lib/etcd
+  $NODE_NAME \
+  $INITIAL_ADVERTISE_PEER_URLS \
+  $ETCD_LISTEN_PEER_URLS \
+  $ETCD_LISTEN_CLIENT_URLS \
+  $ETCD_ADVERTISE_CLIENT_URLS \
+  $ETCD_INITIAL_CLUSTER_TOKEN \
+  $ETCD_INITIAL_CLUSTER \
+  $ETCD_INITIAL_CLUSTER_STATE \
+  $ETCD_CERT_FILE \
+  $ETCD_KEY_FILE \
+  $ETCD_CLIENT_CERT_AUTH \
+  $ETCD_TRUSTED_CA_FILE \
+  $ETCD_PEER_CERT_FILE \
+  $ETCD_PEER_KEY_FILE \
+  $ETCD_PEER_CLIENT_CERT_AUTH \
+  $ETCD_PEER_TRUSTED_CA_FILE \
+  $ETCD_DATA_DIR
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target
-EOF
-
 ```
 
 ### Create systemd for API Server
@@ -64,7 +63,7 @@ ExecStart=/usr/k8s/bin/kube-apiserver \
   $KUBE_API_ADVERTISE_ADDRESS \
   $KUBE_API_BIND_ADDRESS \
   $KUBE_API_INSECURE_ADDRESS \
-  $KUBELET_AUTH
+  $KUBELET_AUTH \
   $KUBE_SERVICE_ADDRESSES \
   $KUBE_SERVICE_NODE_PORT_RANGE \
   $KUBE_SSL_CERTS \
