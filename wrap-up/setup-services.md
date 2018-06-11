@@ -5,7 +5,7 @@ The recommended place for user generated systemd files is `/etc/systemd/system/`
 ### Create `systemd` for etcd
 There are many arguments need to be passed in when etcd is started. To keep the `systemd` file short and clean, it is better to store the environment configurations at a seperate place. There are two ways to setup the configurations. The first way is to use Linux environment variables. All variable names start with `ETCD_`, then the variable names with dashes replaced with underscores. For example, environment variable of `--name` is `ETCD_NAME`. The name of `--listen-client-urls` is `ETCD_LISTEN_CLIENT_URLS` etc. The second way to store the parameters is to use a seperate file. In this tutorial, we are going to use files to store start up parameters for all Kubernetes cluster components.
 
-Create etcd environment file `etcd` in `/usr/k8s/bin/`. Please refer [etcd](environment/etcd) as an example.
+Create etcd environment file `etcd` in `/usr/k8s/bin/env`. Please refer [etcd](environment/etcd) as an example.
 
 Create the etcd systemd file `etcd.service` in `/etc/systemd/system/` with below content:
 
@@ -19,8 +19,8 @@ Documentation=https://github.com/coreos
 
 [Service]
 Type=notify
-EnvironmentFile=/usr/k8s/bin/etcd
-WorkingDirectory=$WORKING_DIRECTORY
+EnvironmentFile=/usr/k8s/bin/env/etcd
+WorkingDirectory=/var/lib/etcd/
 ExecStart=/usr/k8s/bin/etcd \
   $NODE_NAME \
   $INITIAL_ADVERTISE_PEER_URLS \
@@ -39,6 +39,7 @@ ExecStart=/usr/k8s/bin/etcd \
   $ETCD_PEER_CLIENT_CERT_AUTH \
   $ETCD_PEER_TRUSTED_CA_FILE \
   $ETCD_DATA_DIR
+
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=65536
@@ -48,6 +49,10 @@ WantedBy=multi-user.target
 ```
 
 ### Create systemd for API Server
+Similar to etcd, it is better to create a seperate file to store parameters for API Server bootstrap.
+
+Please refer [apiserver](environment/apiserver) as an example.
+
 ```shell
 [Unit]
 Description=Kubernetes API Server
@@ -57,7 +62,7 @@ After=etcd.service
 
 [Service]
 Environment=NODE_IP=192.168.1.101
-EnvironmentFile=/usr/k8s/bin/apiserver
+EnvironmentFile=/usr/k8s/bin/env/apiserver
 ExecStart=/usr/k8s/bin/kube-apiserver \
   $KUBE_ADMISSION_CONTROL \
   $KUBE_API_ADVERTISE_ADDRESS \
@@ -81,3 +86,6 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 ```
 
+### Create `systemd` for Controller Manager
+
+### Create `systemd` for Scheduler

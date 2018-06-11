@@ -5,10 +5,7 @@
 #
 
 # The name of the node in the cluster
-NODE_NAME="--name etcd1"
-
-# The working directory of the cluster
-ETCD_WORKING_DIRECTORY="/var/lib/etcd/"
+NODE_NAME="--name etcd3"
 
 # List of this member's peer URLs to advertise to the rest of the cluster
 ETCD_INITIAL_ADVERTISE_PEER_URLS="--initial-advertise-peer-urls https://192.168.1.101:2380"
@@ -48,10 +45,9 @@ ETCD_CLIENT_CERT_AUTH="--client-cert-auth=true"
 ETCD_TRUSTED_CA_FILE="--trusted-ca-file /etc/etcd/ssl/etcd-root-ca.pem"
 
 # Peer certificates
-ETCD_PEER_CERT_FILE="--peer-cert-file=/etc/etcd/ssl/etcd1.pem"
+ETCD_PEER_CERT_FILE="--peer-cert-file=/etc/etcd/ssl/etcd3.pem"
 ETCD_PEER_KEY_FILE="--peer-key-file=/etc/etcd/ssl/etcd3-key.pem"
 ETCD_PEER_CLIENT_CERT_AUTH="--peer-client-cert-auth=true"
 ETCD_PEER_TRUSTED_CA_FILE="--peer-trusted-ca-file=/etc/etcd/ssl/etcd-root-ca.pem"
-
 
 ETCD_DATA_DIR="--data-dir /var/lib/etcd"
