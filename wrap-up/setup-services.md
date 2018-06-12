@@ -1,8 +1,8 @@
-## Setup Linux Services
+## Setup Linux System Services
 
 The recommended place for user generated systemd files is `/etc/systemd/system/` folder. All systemd files in this tutorial will be placed inside this folder.
 
-### Create `systemd` for etcd
+### Create `systemd` Unit for etcd
 There are many arguments need to be passed in during etcd bootstrap. To keep the `systemd` file short and clean, it is better to store the environment configurations at a seperate place. There are two ways to store the configurations. The first way is to use system environment variables. There is a easy-to-remember naming convention for etcd environment variables. The variable names start with `ETCD_`, followed by variable names with dashes replaced with underscores. For example, the variable name of `--name` is `ETCD_NAME`; the variable name of `--listen-client-urls` is `ETCD_LISTEN_CLIENT_URLS` and etc. The second way to store the parameters is to store them in a seperate file and pass the file to `systemd`. In this tutorial, we are going to use files to store bootstrap arguments for all Kubernetes cluster components.
 
 Create etcd environment file `etcd` in `/usr/k8s/bin/env`. Please refer [etcd](../environment/etcd) as an example.
@@ -48,7 +48,7 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 ```
 
-### Create systemd for API Server
+### Create `systemd` Unit for API Server
 Similar to etcd, it is better to create a seperate file to store parameters for API Server bootstrap.
 
 Please refer [apiserver](../environment/apiserver) as an example.
@@ -86,7 +86,7 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 ```
 
-### Create `systemd` for Controller Manager
+### Create `systemd` Unit for Controller Manager
 
 ```shell
 [Unit]
@@ -116,7 +116,7 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 ```
 
-### Create `systemd` for Scheduler
+### Create `systemd` Unit for Scheduler
 
 ```shell
 [Unit]
@@ -142,3 +142,6 @@ LimitNOFILE=65536
 [Install]
 WantedBy=multi-user.target
 ```
+
+> Note:  
+When creating the `systemd` files, please make sure `Type=Notify` is **ONLY** applied for API Server but not for the Controller Manager and Scheduler. Otherwise, `systemd` will keep restarting Controller Manager and Scheduler due to a startup timeout (because only API Server needs to send a notify system call to indicate it is able to accept requests).
