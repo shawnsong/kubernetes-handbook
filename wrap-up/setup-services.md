@@ -144,4 +144,4 @@ WantedBy=multi-user.target
 ```
 
 > Note:  
-When creating the `systemd` files, please make sure `Type=Notify` is **ONLY** applied for API Server but not for the Controller Manager and Scheduler. Otherwise, `systemd` will keep restarting Controller Manager and Scheduler due to a startup timeout (because only API Server needs to send a notify system call to indicate it is able to accept requests).
+When creating the `systemd` files, please make sure `Type=Notify` is **ONLY** applied for API Server but not for the Controller Manager and Scheduler. Otherwise, `systemd` will keep restarting Controller Manager and Scheduler due to a startup timeout (because only API Server needs to send a notify system call to indicate it is able to accept requests). Please refer `systemd` `man` page for more information.
