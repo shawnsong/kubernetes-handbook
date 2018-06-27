@@ -131,7 +131,7 @@ Pelase refer the last section of [setup-kube-apiserver](kube-apiserver/setup-kub
 ### 8.4 Setup High Available Controller Manager and Scheduler
 Unlike API Server, Controller Manager and Scheduler's high availability is relying on leader-election and etcd. So no configuration is required for high availability of these two components.
 
-## 9. Deploy Worker Node
+## 9. Setup Worker Node
 Kubernetes worker node requires these component:
 - kubelet
 - docker
@@ -143,6 +143,14 @@ Kubernetes worker node requires these component:
 Kubelet is an agent that required on each worker node. It works as a daemon that guarantees that containers are running inside pods. It is similar to `systemd` in Linux. Kubelet only 'monitors' containers started by Kubelet. User started containers are not monitored.
 
 Please refer [setup-kubelet](kubelet/setup-kubelet.md) to setup Kubelet on worker nodes.
+
+### 9.2 Setup Docker
+
+### 9.3 Setup Flannel
+We have setup flannel on master nodes already. The same operations should be performed on worker nodes as well.
+
+### 9.4 Setup Kube Proxy
+
 
 ## 10. Wrap Up
 ### 10.1 Enable Firewall on Master Nodes

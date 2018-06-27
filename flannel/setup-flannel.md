@@ -85,3 +85,11 @@ etcdctl \
 ```
 
 ## Repeat the previous steps on all nodes
+
+Below is a sample output after flannel is started on 3 nodes:
+
+```shell
+/kubernetes/network/subnets/172.30.40.0-24
+/kubernetes/network/subnets/172.30.17.0-24
+/kubernetes/network/subnets/172.30.53.0-24
+```
