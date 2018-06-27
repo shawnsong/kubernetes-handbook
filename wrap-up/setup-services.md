@@ -1,6 +1,6 @@
 ## Setup Linux System Services
 
-The recommended place for user generated systemd files is `/etc/systemd/system/` folder. All systemd files in this tutorial will be placed inside this folder.
+The recommended place for user generated systemd files is `/etc/systemd/system/` folder. All `systemd` unit files created in this tutorial will be placed inside this folder.
 
 ### Create `systemd` Unit for etcd
 There are many arguments need to be passed in during etcd bootstrap. To keep the `systemd` file short and clean, it is better to store the environment configurations at a seperate place. There are two ways to store the configurations. The first way is to use system environment variables. There is a easy-to-remember naming convention for etcd environment variables. The variable names start with `ETCD_`, followed by variable names with dashes replaced with underscores. For example, the variable name of `--name` is `ETCD_NAME`; the variable name of `--listen-client-urls` is `ETCD_LISTEN_CLIENT_URLS` and etc. The second way to store the parameters is to store them in a seperate file and pass the file to `systemd`. In this tutorial, we are going to use files to store bootstrap arguments for all Kubernetes cluster components.
@@ -144,4 +144,29 @@ WantedBy=multi-user.target
 ```
 
 > Note:  
-When creating the `systemd` files, please make sure `Type=Notify` is **ONLY** applied for API Server but not for the Controller Manager and Scheduler. Otherwise, `systemd` will keep restarting Controller Manager and Scheduler due to a startup timeout (because only API Server needs to send a notify system call to indicate it is able to accept requests). Please refer `systemd` `man` page for more information.
+When creating the `systemd` files, please make sure `Type=Notify` is **ONLY** applied to API Server and not to the Controller Manager and Scheduler. Otherwise, `systemd` will keep restarting Controller Manager and Scheduler due to a startup timeout (because only API Server sends a notify system call to indicate it is able to accept requests). Please refer `systemd` `man` page for more information.
+
+### Create `systemd` Unit for Flannel
+
+```shell
+[Unit]
+Description=Flanneld overlay address etcd agent
+After=network.target
+After=network-online.target
+Wants=network-online.target
+After=etcd.service
+Before=docker.service
+
+[Service]
+Type=notify
+ExecStart=/usr/k8s/bin/flanneld \
+  FLANNEL_CERTS \
+  ETCD_ENDPOINTS \
+  ETCD_PREFIX
+ExecStartPost=/usr/k8s/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=docker.service
+```
