@@ -12,8 +12,3 @@ ETCD_PREFIX="-etcd-prefix=/kubernetes/network"
 
 FLANNEL_CERTS="-etcd-cafile=/etc/kubernetes/ssl/ca.pem -etcd-certfile=/etc/flanneld/ssl/flanneld.pem -etcd-keyfile=/etc/flanneld/ssl/flanneld-key.pem"
 
-# Certificates used by Controlelr Manager
-KUBE_CLUSTER_CERTS="--cluster-signing-cert-file=/etc/kubernetes/ssl/ca.pem --cluster-signing-key-file=/etc/kubernetes/ssl/ca-key.pem --service-account-private-key-file=/etc/kubernetes/ssl/ca-key.pem --root-ca-file=/etc/kubernetes/ssl/ca.pem"
-
-# Other parameters
-KUBE_CONTROLLER_MANAGER_ARGS="--cluster-name=kubernetes --leader-elect=true"

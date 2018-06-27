@@ -50,7 +50,7 @@ SERVICE_ACCOUNT_CONFIGS="--service-account-key-file=/etc/kubernetes/ssl/ca-key.p
 AUDIT_LOG_CONFIGS="--audit-log-maxage=30 --audit-log-maxbackup=3 --audit-log-maxsize=100 --audit-log-path=/var/lib/audit.log --audit-policy-file=/etc/kubernetes/audit-policy.yaml"
 
 # Other configs
-OTHER_CONFIGS="--enable-swagger-ui=true --allow-privileged=true --apiserver-count=2 --event-ttl=1h --logtostderr=true --v=2"
+OTHER_CONFIGS="--enable-swagger-ui=true --allow-privileged=true --apiserver-count=2 --event-ttl=1h"
 
 # Add your own!
 KUBE_API_ARGS=""

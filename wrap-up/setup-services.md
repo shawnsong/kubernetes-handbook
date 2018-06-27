@@ -49,9 +49,9 @@ WantedBy=multi-user.target
 ```
 
 ### Create `systemd` Unit for API Server
-Similar to etcd, it is better to create a seperate file to store parameters for API Server bootstrap.
+Similar to etcd, it is better to create a seperate file to store parameters for API Server bootstrap. There are several parameters that are used by all the components, so we create a file to store all shared parameters first, then create the API Server environment file.
 
-Please refer [apiserver](../environment/apiserver) as an example.
+Please refer [shared-config](../environment/shared-config) and [apiserver](../environment/apiserver) as an example.
 
 ```shell
 [Unit]
@@ -62,6 +62,7 @@ After=etcd.service
 
 [Service]
 Environment=NODE_IP=192.168.1.101
+EnvironmentFile=/usr/k8s/bin/env/shared-config
 EnvironmentFile=/usr/k8s/bin/env/apiserver
 ExecStart=/usr/k8s/bin/kube-apiserver \
   $KUBE_ADMISSION_CONTROL \
@@ -76,6 +77,8 @@ ExecStart=/usr/k8s/bin/kube-apiserver \
   $ETCD_SSL_CERTS \
   $KUBE_ETCD_SERVERS \
   $AUDIT_LOG_CONFIGS \
+  $KUBE_LOG_LEVEL \
+  $KUBE_LOGTOSTDERR \
   $OTHER_CONFIGS
 Restart=on-failure
 RestartSec=5
@@ -158,13 +161,14 @@ After=etcd.service
 Before=docker.service
 
 [Service]
-Type=notify
+EnvironmentFile=/usr/k8s/bin/env/flannel
 ExecStart=/usr/k8s/bin/flanneld \
-  FLANNEL_CERTS \
-  ETCD_ENDPOINTS \
-  ETCD_PREFIX
+  $FLANNEL_CERTS \
+  $ETCD_ENDPOINTS \
+  $ETCD_PREFIX
 ExecStartPost=/usr/k8s/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker
 Restart=on-failure
+Type=notify
 
 [Install]
 WantedBy=multi-user.target
