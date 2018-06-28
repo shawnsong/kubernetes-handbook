@@ -144,10 +144,12 @@ Kubelet is an agent that required on each worker node. It works as a daemon that
 
 Please refer [setup-kubelet](kubelet/setup-kubelet.md) to setup Kubelet on worker nodes.
 
-### 9.2 Setup Docker
-
-### 9.3 Setup Flannel
+### 9.2 Setup Flannel
 We have setup flannel on master nodes already. The same operations should be performed on worker nodes as well.
+
+### 9.3 Setup Docker
+
+Please refer [setup-docker](docker/setup-docker.md) to setup Docker on worker nodes.
 
 ### 9.4 Setup Kube Proxy
 
