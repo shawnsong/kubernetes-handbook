@@ -6,19 +6,16 @@ We have enabled bootstrap token authentication on our API Server (see [setup-api
 
 > Note: `kubelet-bootstrap` is the user specified in `token.csv`. 
 
-Create a cluster role in the cluster
+- Create a cluster role in the cluster
 ```shell
-kubectl create clusterrolebinding kubelet-bootstrap --clusterrole=system:node-bootstrapper --user=kubelet-bootstrap
+kubectl create clusterrolebinding kubelet-bootstrap \ 
+ --clusterrole=system:node-bootstrapper \
+ --user=kubelet-bootstrap
 ```
+Make sure the parameter assigned to `--user` is *same* as the user in `token.csv`.
 
-Make sure the `--user` is *same* the user in `token.csf`.
-
-Create a RBAC 
-```shell
-kubectl create clusterrolebinding kubelet-nodes --clusterrole=system:node --group=system:nodes
-```
-
-Configure the cluster parameters
+The next step is to create a kubelet-bootstrap configuration file. This can be achieved by using `kubectl`.
+- Configure the cluster parameters
 ```shell
 kubectl config set-cluster kubernetes \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
@@ -27,14 +24,14 @@ kubectl config set-cluster kubernetes \
   --kubeconfig=bootstrap.kubeconfig
 ```
 
-Configure authentication parameters
+- Configure authentication parameters
 ```shell
 kubectl config set-credentials kubelet-bootstrap \
   --token=${BOOTSTRAP_TOKEN} \
   --kubeconfig=bootstrap.kubeconfig
 ```
 
-Configure the context
+- Configure the context
 ```shell
 kubectl config set-context default \
   --cluster=kubernetes \
@@ -42,7 +39,37 @@ kubectl config set-context default \
   --kubeconfig=bootstrap.kubeconfig
 ```
 
-Use the default context
+- Use the default context
 ```shell
 kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
 ```
+- Move `bootstrap.kubeconfig`
+```shell
+mv bootstrap.kubeconfig /etc/kubernetes/
+```
+
+The command to start Kubelet is as below. I highly recommand you read the notes first before starting Kubelet.
+```shell
+/usr/k8s/bin/kubelet \
+  --fail-swap-on=false \
+  --cgroup-driver=cgroupfs \
+  --address=${NODE_IP} \
+  --hostname-override=${NODE_IP} \
+  --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \
+  --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
+  --cert-dir=/etc/kubernetes/ssl \
+  --cluster-dns=${CLUSTER_DNS_SVC_IP} \
+  --cluster-domain=${CLUSTER_DNS_DOMAIN} \
+  --hairpin-mode promiscuous-bridge \
+  --allow-privileged=true \
+  --serialize-image-pulls=false \
+  --logtostderr=true \
+  --runtime-cgroups=/systemd/system.slice \
+  --kubelet-cgroups=/systemd/system.slice \
+  --v=2
+```
+> **Note**:  
+  - Comment out `swap` in `/etc/fstab`. Also, make sure `--fail-swap-on` is set to `false`. This is required after Kubernetes 1.8
+  - Make sure `--cgroup-driver` is set to the same driver that docker is using. This can be checked by running `docker info | grep cgroup`
+  - Make sure `--hostname-override` is set to the same value on kube-proxy as well
+  - Before Kubelet starts the first time, the file `--kubeconfig=/etc/kubernetes/kubelet.kubeconfig` does not exist. It is a location where Kubelet configuration file is stored. When Kubelet starts up the first time, it sends a bootstrap request to the cluster. The cluster will generate a certificate for this node. This certificate needs to be approved by system admin to allow this node to join the cluster. This file will only be generated after the certificates is approved. Next time when Kubelet starts again (machine reboot), it does not need to send a bootstrap request again, it will just reuse this configuration file.
