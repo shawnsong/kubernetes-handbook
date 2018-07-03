@@ -174,3 +174,27 @@ Type=notify
 WantedBy=multi-user.target
 RequiredBy=docker.service
 ```
+
+### Create `systemd` Unit for Kubelet
+```shell
+[Unit]
+Description=kubelet: The Kubernetes Node Agent
+Documentation=https://kubernetes.io/docs/concepts/overview/components/#kubelet https://kubernetes.io/docs/reference/generated/kubelet/
+
+[Service]
+WorkingDirectory=/var/lib/kubelet
+EnvironmentFile=-/usr/k8s/bin/env/kubelet
+ExecStart=/usr/k8s/bin/kubelet \
+  $KUBELET_ADDRESS \
+  $KUBELET_HOSTNAME \
+  $KUBELET_KUBECONFIG \
+  $KUBE_LOGTOSTDERR \
+  $KUBE_LOG_LEVEL \
+  $KUBELET_ARGS
+
+Restart=on-failure
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+```
