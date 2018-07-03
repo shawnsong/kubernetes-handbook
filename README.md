@@ -1,5 +1,9 @@
 # Setup Kubernetes Cluster from Scratch
 
+This is a handbook to setup a Kubernetes cluster from scratch and is for someone who is familiar with Kubernetes already. If you are new to Kubernetes, I highly recommand to get yourself familar with Kubernetes first and come back to this handbook. 
+
+If all you need is to have a proper setup cluster, then Kubeadm is an easy to use tool to setup a cluster. If you want to have a deep understanding of all different components of Kubernetes, then setting up a cluster from scratch is definitely a good way to learn.
+
 ## Component Versions and Cluster Environment
 - Centos 7.3
 - Kubernetes 1.9.2
