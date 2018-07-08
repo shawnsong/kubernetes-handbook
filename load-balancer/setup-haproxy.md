@@ -25,6 +25,12 @@ The /etc/haproxy/haproxy.cfg configuration file is divided into the following se
 * backend
   Defines the servers to which the proxy forwards client connections.
 
+## Disable SELinux
+Please make sure SELinux is switched off. Otherwise, HAProxy might not be able to redirect/forward your traffic to backend streams. 
+
+To disable SELinux, edit file `/etc/selinux/config` and set `SELinux=disabled`.
+
+Reboot the server. 
 
 
 ## Configure HAProxy

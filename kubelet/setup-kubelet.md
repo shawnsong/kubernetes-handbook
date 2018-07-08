@@ -43,7 +43,7 @@ kubectl config set-context default \
 ```shell
 kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
 ```
-- Move `bootstrap.kubeconfig`
+- Move `bootstrap.kubeconfig` to the correct folder
 ```shell
 mv bootstrap.kubeconfig /etc/kubernetes/
 ```

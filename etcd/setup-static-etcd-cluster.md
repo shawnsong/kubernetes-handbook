@@ -185,7 +185,7 @@ curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pe
 ```
 and **get** the value from a different node (etcd2 or etcd3)
 ```shell
-curl --cacert /etc/etcd/ssl/etcd-root-ca.pem etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd2:2379/v2/keys/foo -XGET -v
+curl --cacert /etc/etcd/ssl/etcd-root-ca.pem --cert ./client.pem --key ./client-key.pem -L https://etcd2:2379/v2/keys/foo -XGET -v
 ```
 Or we can use etcdctl
 ```shell
