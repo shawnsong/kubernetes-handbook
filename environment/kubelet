@@ -20,4 +20,4 @@ KUBE_LOGTOSTDERR="--logtostderr=true"
 KUBE_LOG_LEVEL="--v=2"
 
 # Add your own!
-KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --cert-dir=/etc/kubernetes/ssl -allow-privileged=true"
+KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --cert-dir=/etc/kubernetes/ssl --allow-privileged=true"
