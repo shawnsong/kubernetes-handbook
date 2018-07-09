@@ -1,5 +1,6 @@
 # Setup Kubelet
 
+## Configure and Run Kubelet from Command Line
 Kubelet is similar to a daemon process that monitors the containers state and keep them running. Kubelet interact with the cluster via API Server. To make our cluster secure, we want to enforce HTTPS connections between kubelet and API Server. If we have 1000 worker nodes, we need to create 1000 key/certificates. Manually managing those certificates is error prone and not scalable. Forturnately, we can use bootstrap token to authenticate our worker nodes and let the cluster to generate certificates for us automatically.
 
 We have enabled bootstrap token authentication on our API Server (see [setup-apiserver](../kube-apiserver/setup-kube-apiserver.md)). When a Kubelet starts, it sends a bootstrap request. A new certificate will be generated, the system admin needs to approve the certificate to allow the worker node to join the cluster. To allow the worker to send bootstrap request to the API Server, we need to create a `system:node-bootstrapper` Cluster Role, and assign this role to `kubelet-bootstrap` user.
@@ -75,3 +76,6 @@ The command to start Kubelet is as below. I highly recommand you read the notes 
   - Before Kubelet starts the first time, the file `--kubeconfig=/etc/kubernetes/kubelet.kubeconfig` does not exist. It is a location where Kubelet configuration file is stored. When Kubelet starts up the first time, it sends a bootstrap request to the cluster. The cluster will generate a certificate for this node. This certificate needs to be approved by system admin to allow this node to join the cluster. This file will only be generated after the certificates is approved. Next time when Kubelet starts again (machine reboot), it does not need to send a bootstrap request again, it will just reuse this configuration file.
   - `--hairpin-mode` is default to promiscuous-bridge. Hairpinning is where a machine on the LAN is able to access another machine on the LAN via the external IP address of the LAN/router (with port forwarding set up on the router to direct requests to the appropriate machine on the LAN).
   - `--serialize-image-pull` is set to false so that do not pull one images at a time. We recommend *not* changing the default value on nodes that run docker daemon with version < 1.9
+
+## Setup Kubelet `systemd` Service
+Please refer [setup-services](../wrap-up/setup-services.md) to create Kubelet service on each node.
