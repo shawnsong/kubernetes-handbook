@@ -1,4 +1,7 @@
 # Setup Kube Proxy
+Kube Proxy is required on each node to provide service discoverary functionality. It allows users to access 'Services' in Kubernetes, from both Pods and outside. 
+
+There are two implementations for Kube Proxy: Namespace and Iptables. Iptables is the default after v1.0.
 
 ## Create Certificates
 ```shell
