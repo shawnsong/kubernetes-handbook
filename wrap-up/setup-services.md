@@ -176,6 +176,12 @@ RequiredBy=docker.service
 ```
 
 ### Create `systemd` Unit for Kubelet
+Create working directory first
+```shell
+sudo mkdir -p /var/lib/kubelet
+```
+
+Create `/etc/systemd/system/kubelet.service` file
 ```shell
 [Unit]
 Description=kubelet: The Kubernetes Node Agent
@@ -193,6 +199,7 @@ ExecStart=/usr/k8s/bin/kubelet \
   $KUBELET_ARGS
 
 Restart=on-failure
+RestartSec=5
 KillMode=process
 
 [Install]
@@ -200,3 +207,34 @@ WantedBy=multi-user.target
 ```
 
 ### Create `systemd` Unit for Kube-Proxy
+
+Create working directory first
+```shell
+sudo mkdir -p /var/lib/kube-proxy
+```
+
+Create `/etc/systemd/system/kube-proxy.service` file
+```shell
+[Unit]
+Description=kube-proxy: The Kubernetes Proxy Server
+Documentation=https://kubernetes.io/docs/concepts/overview/components/#kube-proxy https://kubernetes.io/docs/reference/generated/kube-proxy/
+After=network.target
+
+[Service]
+WorkingDirectory=/var/lib/kube-proxy
+EnvironmentFile=-/usr/k8s/bin/env/kube-proxy
+ExecStart=/usr/k8s/bin/kube-proxy \
+  $BIND_ADDRESS \
+  $HOST_NAME_OVERRIDE \
+  $CLUSTER_CIDR \
+  $KUBECONFIG \
+  $KUBE_LOGTOSTDERR \
+  $KUBE_LOG_LEVEL
+
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+```
