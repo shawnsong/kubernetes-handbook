@@ -97,7 +97,7 @@ Kubernetes Scheduler is the resource scheduler of the cluster. The scheduler det
 
 Please refer [setup-kube-scheduler](kube-scheduler/setup-kube-scheduler.md) to setup the Scheduler
 
-### 7.4 Verify the Setup
+### 7.4 Verify the Setup of Master Components
 To verify every component is installed and configured correctly, we use `kubectl` to check the status of the cluster:
 
 ```shell
@@ -142,7 +142,6 @@ Kubernetes worker node requires these component:
 - flannel
 - kube-proxy
 
-
 ### 9.1 Setup Kubelet
 Kubelet is an agent that required on each worker node. It works as a daemon that guarantees that containers are running inside pods. It is similar to `systemd` in Linux. Kubelet only 'monitors' containers started by Kubelet. User started containers are not monitored.
 
@@ -152,11 +151,10 @@ Please refer [setup-kubelet](kubelet/setup-kubelet.md) to setup Kubelet on worke
 We have setup flannel on master nodes already. The same operations should be performed on worker nodes as well.
 
 ### 9.3 Setup Docker
-
 Please refer [setup-docker](docker/setup-docker.md) to setup Docker on worker nodes.
 
 ### 9.4 Setup Kube Proxy
-
+Please refer [setup-kube-proxy](kube-proxy/setup-kube-proxy.md) to setup Kube-Proxy on worker nodes.
 
 ## 10. Wrap Up
 ### 10.1 Enable Firewall on Master Nodes
@@ -167,4 +165,7 @@ Please refer [enable-firewall](wrap-up/enable-firewall.md) to enable the firewal
 ### 10.2 Setup `systemd` for Master Compnents
 There are two ways to keep our master components (etcd, Controller, API Server, Scheduler) running all the time: the first way is to run all components in containers and let `Kubelet` to guarantee their running state. The second way is to make each component as a Linux Service (Daemon) and use Linux `systemd` to manage them. Because `systemd` is a highly controversial technology in Linux and it is not available in all Linux distros (Gentoo), hence it is not recommended by Kubernetes official documentation. However, using `Kubelet` will introduce 'Watching the watchers' issue (who is going to manage the state of `Kubelet` and make sure it is running?), but it is less controversial and OS dependent. In This tutorial, we are going use `systemd` to setup the cluster.
 
-Please refer [setup-services](wrap-up/setup-services.md) for the setup.
+Please refer [setup-services](wrap-up/setup-services.md) for the configurations.
+
+### 10.3 Setup `systemd` for Worker Nodes (Minions)
+Please refer [setup-services](wrap-up/setup-services.md) for the configurations.
