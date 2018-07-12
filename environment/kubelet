@@ -11,7 +11,12 @@ KUBELET_ADDRESS="--address=192.168.1.9"
 KUBELET_HOSTNAME="--hostname-override=192.168.1.9"
 
 # Edit the kubelet.kubeconfig to have correct cluster server address
-KUBELET_KUBECONFIG="/etc/kubernetes/kubelet.kubeconfig"
+KUBELET_KUBECONFIG="--kubeconfig=/etc/kubernetes/kubelet.kubeconfig"
+
+# IP Adress of DNS server. This needs to match the CLUSTER_IP defined in DNS addon 
+CLUSTER_DNS="--cluster-dns=10.254.0.2"
+# Domain name of the cluster
+CLUSTER_DOMAIN="--cluster-domain=cluster.local"
 
 # logging to stderr means we get it in the systemd journal
 KUBE_LOGTOSTDERR="--logtostderr=true"
