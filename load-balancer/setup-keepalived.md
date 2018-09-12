@@ -117,7 +117,7 @@ If we stop keepalived on master, the virtual ip will be *shifting* to the backup
 The next step is to setup Keepalived in NAT mode to implement a simple failover and load balancing configuration on two servers. Add the following content to the configure files.
 
 ```shell
-virtual_server 192.168.100.101 80 {
+virtual_server 192.168.1.201 80 {
     delay_loop 6
     lb_algo rr
     lb_kind NAT
@@ -141,7 +141,7 @@ virtual_server 192.168.100.101 80 {
     }
 }
 
-virtual_server 192.168.100.101 443 {
+virtual_server 192.168.1.201 443 {
     delay_loop 6
     lb_algo rr
     lb_kind NAT
