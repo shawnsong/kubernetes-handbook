@@ -113,8 +113,8 @@ If we stop keepalived on master, the virtual ip will be *shifting* to the backup
 > **Note**  
 > There should always be ONLY one server active as the master at any point in time. If the master is failed, the backup server with highest prority number will takeover the master role until the master has come back up. If more than one servers are configured with same priority number, then the server with highest ip address will be the master.
 
-## Configure Load Balancing Using Keepalived in NAT Mode
-The next step is to setup Keepalived in NAT mode to implement a simple failover and load balancing configuration on two servers. Add the following content to the configure files.
+## Configure Load Balancing Using Keepalived in NAT Mode (Optional)
+The next step is to setup Keepalived in NAT mode to implement a simple failover and load balancing configuration on two servers. Add the following content to the configure files. This step is optional as HAProxy will be used as the load balancer in this tutorial. However, `keepalived` can also be used as load balancer and perform similar functionalities.
 
 ```shell
 virtual_server 192.168.1.201 80 {
