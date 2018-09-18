@@ -12,7 +12,7 @@ We are going to setup a 3-node static TLS secured etcd cluster by using self sig
 ## Install etcd
 Go to [https://github.com/coreos/etcd/releases](etcd)'s official release page and download the latest etcd version. This tutorial uses v3.2.9. 
 
-> Note: please make sure domain names/hostnames are not allowed in some of the flags such as `listen-peer-urls` so please use IP Addresses to bootstrap the static cluster.
+> Note: please be aware that domain names/hostnames are not allowed for some of the flags such as `listen-peer-urls` so please only use IP Addresses to bootstrap the static cluster.
 
 ```shell
 curl -O -L https://github.com/coreos/etcd/releases/download/v3.2.9/etcd-v3.2.9-linux-amd64.tar.gz
