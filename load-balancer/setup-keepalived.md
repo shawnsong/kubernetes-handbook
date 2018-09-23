@@ -50,10 +50,18 @@ net.ipv4.ip_nonlocal_bind = 1
 Use the following configuration for `/etc/keepalived/keepalived.conf` on the master server which is **192.168.1.101** in this tutorial. 
 
 ```shell
-global_defs {
-   notification_email {
-     
-   }
+
+vrrp_script haproxy-check {
+    script "killall -0 haproxy"
+    interval 2
+    weight 20
+}
+
+vrrp_script haproxy-check {
+    # -0 checks if the process is running
+    script "killall -0 haproxy"
+    interval 2
+    weight 20
 }
 
 vrrp_instance haproxy-virtual-ip {
@@ -76,8 +84,19 @@ vrrp_instance haproxy-virtual-ip {
         auth_pass 1066
     }
 
+    unicast_src_ip 192.168.1.101
+
+    unicast_peer {
+        192.168.1.102
+        192.168.1.103
+    }
+
     virtual_ipaddress {
         192.168.1.201/24
+    }
+
+    track_script {
+        haproxy-check weight 20
     }
 }
 ```
@@ -85,6 +104,7 @@ vrrp_instance haproxy-virtual-ip {
 Copy the above file to the backup server **192.168.1.102** and make the following changes:
 1. Change the `state` to `BACKUP`
 2. Change the `priority` to a lower value, `150`
+3. Change the `unicast_src_ip` and `unicast_peer` accordingly
 
 After this setup, we can do a simple testing before moving on to the next steps. It is a good practice to keep testing your configurations while you are modifying them. This helps a lot to narrow down where problems are so we can correct them as early as possible.
 
