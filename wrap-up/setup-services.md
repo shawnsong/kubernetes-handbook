@@ -174,6 +174,9 @@ Type=notify
 WantedBy=multi-user.target
 RequiredBy=docker.service
 ```
+> Note:
+Flannel needs to start before docker. After flannel systemd starts, it executes `mk-docker-opts.sh` script and this script will write subnet data into `/run/flannel/docker` which will be used as environment file by docker `systemd`. It will also set docker start options to `DOCKER_NETWORK_OPTIONS` variable which will be also be used in docker `systemd`.
+
 
 ### Create `systemd` Unit for Kubelet
 Create working directory first
