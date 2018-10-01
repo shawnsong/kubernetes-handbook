@@ -3,7 +3,6 @@
 ## Install Flannel
 ```shell
 source /usr/k8s/bin/env.sh
-export NODE_IP=192.168.1.101	# this is the ip of current node
 
 curl -O -L https://github.com/coreos/flannel/releases/download/v0.9.0/flannel-v0.9.0-linux-amd64.tar.gz
 tar -xzvf flannel-v0.9.0-linux-amd64.tar.gz -C flannel
