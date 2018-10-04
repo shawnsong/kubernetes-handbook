@@ -16,7 +16,7 @@ KUBELET_KUBECONFIG="--kubeconfig=/etc/kubernetes/kubelet.kubeconfig"
 # IP Adress of DNS server. This needs to match the CLUSTER_IP defined in DNS addon 
 CLUSTER_DNS="--cluster-dns=10.254.0.2"
 # Domain name of the cluster
-CLUSTER_DOMAIN="--cluster-domain=cluster.local"
+CLUSTER_DNS_DOMAIN="--cluster-domain=cluster.local"
 
 # logging to stderr means we get it in the systemd journal
 KUBE_LOGTOSTDERR="--logtostderr=true"
@@ -25,4 +25,4 @@ KUBE_LOGTOSTDERR="--logtostderr=true"
 KUBE_LOG_LEVEL="--v=2"
 
 # Add your own!
-KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --cert-dir=/etc/kubernetes/ssl --allow-privileged=true"
+KUBELET_ARGS="--cgroup-driver=cgroupfs --fail-swap-on=false --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig --kubeconfig=/etc/kubernetes/kubelet.kubeconfig --cert-dir=/etc/kubernetes/ssl --allow-privileged=true"

@@ -211,6 +211,14 @@ KillMode=process
 [Install]
 WantedBy=multi-user.target
 ```
+Also, please make sure docker is using `cgroupfs` as the cgroup driver. The kube-dns might not be able to run properly if `systemd` is used.
+```shell
+cat << EOF > /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=cgroupfs"]
+}
+EOF
+```
 
 
 ### Create `systemd` Unit for Kubelet
@@ -278,3 +286,4 @@ LimitNOFILE=65536
 [Install]
 WantedBy=multi-user.target
 ```
+
