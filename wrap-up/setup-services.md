@@ -211,6 +211,14 @@ KillMode=process
 [Install]
 WantedBy=multi-user.target
 ```
+Also, please make sure docker is using `cgroupfs` as the cgroup driver. The kube-dns might not be able to run properly if `systemd` is used.
+```shell
+cat << EOF > /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=cgroupfs"]
+}
+EOF
+```
 
 
 ### Create `systemd` Unit for Kubelet
@@ -277,4 +285,68 @@ LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target
+```
+
+## Verify the Cluster
+
+Create `pod-nginx.yaml` with the following content:
+
+```shell
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+```
+
+Create `service-nginx.yaml` with the following content:
+
+```shell
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  ports:
+  - port: 8000 # the port that this service should serve on
+    # the container on each pod to connect to, can be a name
+    # (e.g. 'www') or a number (e.g. 80)
+    targetPort: 80
+    protocol: TCP
+  # just like the selector in the deployment,
+  # but this time it identifies the set of pods to load balance
+  # traffic to.
+  selector:
+    app: nginx
+```
+
+Create the Pod and the Service:
+```shell
+kubectl create -f pod-nginx.yaml
+
+kubectl create -f service-nginx.yaml
+```
+
+Check the Pod and the Service:
+```shell
+kubectl get pod
+NAME      READY     STATUS    RESTARTS   AGE
+nginx     1/1       Running   0          1h
+
+kubectl get svc
+NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+kubernetes      ClusterIP   10.254.0.1       <none>        443/TCP    39m
+nginx-service   ClusterIP   10.254.189.113   <none>        8000/TCP   21h
+```
+
+Check if the Service and Pod are working correctly from worker node:
+```shell
+curl 10.254.189.113:8000
+# should return nginx welcome page
 ```

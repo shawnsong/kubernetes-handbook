@@ -1,0 +1,20 @@
+###
+# kubernetes kube-proxy config
+###
+
+BIND_ADDRESS="--bind-address=192.168.1.9"
+
+HOST_NAME_OVERRIDE="--hostname-override=192.168.1.9"
+
+CLUSTER_CIDR="--cluster-cidr=172.30.0.0/16"
+
+KUBECONFIG="--kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig"
+
+# logging to stderr means we get it in the systemd journal
+KUBE_LOGTOSTDERR="--logtostderr=true"
+
+# journal message level, 0 is debug, 2 is INFO
+KUBE_LOG_LEVEL="--v=2"
+
+# Add your own!
+KUBEPROXY_ARG=""

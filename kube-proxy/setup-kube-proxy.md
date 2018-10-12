@@ -94,3 +94,4 @@ ACCEPT     all  --  10.254.0.0/16        anywhere             /* kubernetes forw
 ACCEPT     all  --  anywhere             10.254.0.0/16        /* kubernetes forwarding conntrack pod destination rule */ ctstate RELATED,ESTABLISHED
 ```
 
+> ``IMPORTANT``: the `--bind-address` must match the public ip address of the node, otherwise KubeDNS cannot be deployed properly on this node. 
