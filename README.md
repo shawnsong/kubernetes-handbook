@@ -148,7 +148,7 @@ Kubelet is an agent that required on each worker node. It works as a daemon that
 Please refer [setup-kubelet](kubelet/setup-kubelet.md) to setup Kubelet on worker nodes.
 
 ### 9.2 Setup Flannel
-We have setup flannel on master nodes already. The same operations should be performed on worker nodes as well.
+We have setup and tested Flannel on master nodes already. The same operations should be performed on worker nodes as well. Please note that normally in a production environment, master nodes do not require to install Flannel as they are not used as worker nodes. 
 
 ### 9.3 Setup Docker
 Please refer [setup-docker](docker/setup-docker.md) to setup Docker on worker nodes.
@@ -169,3 +169,7 @@ Please refer [setup-services](wrap-up/setup-services.md) for the configurations.
 
 ### 10.3 Setup `systemd` for Worker Nodes (Minions)
 Please refer [setup-services](wrap-up/setup-services.md) for the configurations.
+
+
+## 11. Kubernetes Addons
+### 11.1 Setup Kube-DNS
