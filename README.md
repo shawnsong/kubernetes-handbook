@@ -172,4 +172,9 @@ Please refer [setup-services](wrap-up/setup-services.md) for the configurations.
 
 
 ## 11. Kubernetes Addons
-### 11.1 Setup Kube-DNS
+### 11.1 Setup KubeDNS and CoreDNS
+
+### 11.2 Setup Dashboard
+
+
+
