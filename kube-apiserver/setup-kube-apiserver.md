@@ -2,20 +2,20 @@
 
 ## Setup Environment Variables
 ```shell
-export NODE_IP=192.168.1.101  # current node ip
-source /usr/k8s/bin/env.sh
+$ export NODE_IP=192.168.1.101  # current node ip
+$ source /usr/k8s/bin/env.sh
 ```
 
 ## Install Kube-apiserver
 ```shell
-curl -L -O https://dl.k8s.io/v1.9.2/kubernetes-server-linux-amd64.tar.gz
-tar -xzvf kubernetes-server-linux-amd64.tar.gz
-sudo cp -r server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler} /usr/k8s/bin/
+$ curl -L -O https://dl.k8s.io/v1.9.2/kubernetes-server-linux-amd64.tar.gz
+$ tar -xzvf kubernetes-server-linux-amd64.tar.gz
+$ sudo cp -r server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler} /usr/k8s/bin/
 ```
 
 ## Create Kubernetes Certificates
 ```shell
-cat > kubernetes-csr.json <<EOF
+$ cat > kubernetes-csr.json <<EOF
 {
   "CN": "kubernetes",
   "hosts": [
@@ -47,19 +47,19 @@ EOF
 ```
 Generate certificates
 ```shell
-cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem \
+$ cfssl gencert -ca=/etc/kubernetes/ssl/ca.pem \
   -ca-key=/etc/kubernetes/ssl/ca-key.pem \
   -config=/etc/kubernetes/ssl/ca-config.json \
   -profile=kubernetes kubernetes-csr.json | cfssljson -bare kubernetes
 
-sudo mkdir -p /etc/kubernetes/ssl/
-sudo mv kubernetes*.pem /etc/kubernetes/ssl/
+$ sudo mkdir -p /etc/kubernetes/ssl/
+$ sudo mv kubernetes*.pem /etc/kubernetes/ssl/
 ```
 ## Configure Token File
 The token will be used by clients of api-server. For example, when a *kubelet* starts, it sends a TLS Bootstrap request. api-server will check if the token sent by kubelet is same with token.csv. If they match, api-server will generate certificates for that kubelet. The reason we use the bootstrap token is When we have a large number worker nodes, manually generating certificates for each kubelet is time consuming and hard to scale. Using this approach can automate this process.
 
 ```shell
-cat > token.csv <<EOF
+$ cat > token.csv <<EOF
 ${BOOTSTRAP_TOKEN},kubelet-bootstrap,10001,"system:kubelet-bootstrap"
 EOF
 ```
@@ -69,7 +69,7 @@ EOF
 We are going to setup a single node cluster to begin with. Run this command on node master1
 
 ```shell
-/usr/k8s/bin/kube-apiserver \
+$ /usr/k8s/bin/kube-apiserver \
   --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
   --advertise-address=${NODE_IP} \
   --bind-address=0.0.0.0 \

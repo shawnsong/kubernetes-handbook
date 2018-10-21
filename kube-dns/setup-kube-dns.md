@@ -4,7 +4,7 @@
 
 Run below command to install the plugin:
 ```shell
-kubectl create -f kubedns.yaml
+$ kubectl create -f kubedns.yaml
 ```
 
 This will create a `Pod` and a `Service` in `kube-system` namespace. To verify, run the following commands:

@@ -5,9 +5,9 @@ The kube-scheduler execution file is copied to /usr/k8s/bin when we were install
 ## Start kube-scheduler
 ```shell
 # Export environment variables
-source /usr/k8s/bin/env.sh
+$ source /usr/k8s/bin/env.sh
 
-/usr/k8s/bin/kube-scheduler \
+$ /usr/k8s/bin/kube-scheduler \
   --address=127.0.0.1 \
   --master=http://${MASTER1_IP}:8080 \
   --leader-elect=true \
@@ -19,7 +19,7 @@ We can let `kube-scheduler` points to the virtual IP of HAProxy directly: `192.1
 
 ```shell
 # MASTER_URL is defined in env.sh
-export KUBE_APISERVER="https://${MASTER_URL}"
+$ export KUBE_APISERVER="https://${MASTER_URL}"
   --master=http://${KUBE_APISERVER} \
 ```
 We removed the 8080 port number from the server URL because HAProxy will redirect HTTP request to 8080.

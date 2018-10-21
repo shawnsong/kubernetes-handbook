@@ -6,10 +6,10 @@ The kube-controller-manager execution file is copied to /usr/k8s/bin when we wer
 We only have one API Server setup at this point, so we use MASTER1_IP for the `--master` option. This will be changed later.
 ```shell
 # Setup Environment Variables
-source /usr/k8s/bin/env.sh
+$ source /usr/k8s/bin/env.sh
 
 # Start Controller Manager
-/usr/k8s/bin/kube-controller-manager \
+$ /usr/k8s/bin/kube-controller-manager \
   --address=127.0.0.1 \
   --master=http://${MASTER1_IP}:8080 \
   --allocate-node-cidrs=true \
@@ -46,7 +46,7 @@ We can let `kube-controller-manager` points to the virtual IP of HAProxy directl
 
 ```shell
 # MASTER_URL is defined in env.sh
-export KUBE_APISERVER="https://${MASTER_URL}"
+$ export KUBE_APISERVER="https://${MASTER_URL}"
 # Use the above command but replace --master with below value
 ...
   --master=http://${KUBE_APISERVER} \
