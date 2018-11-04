@@ -3,11 +3,11 @@
 ## Export Environment Variables
 ```shell
 source /usr/k8s/bin/env.sh
-export KUBE_APISERVER="https://${MASTER1_IP}:6443"
+export KUBE_APISERVER="https://${MASTER_URL}:6443"
 ```
 ## Download and Install Kubectl
 ```shell
-curl -O -L https://dl.k8s.io/v1.9.3/kubernetes-client-linux-amd64.tar.gz 
+curl -O -L https://dl.k8s.io/v1.9.2/kubernetes-client-linux-amd64.tar.gz 
 tar -xzvf kubernetes-client-linux-amd64.tar.gz
 sudo cp kubernetes/client/bin/kube* /usr/k8s/bin/
 sudo chmod a+x /usr/k8s/bin/kube*
@@ -17,7 +17,7 @@ export PATH=/usr/k8s/bin:$PATH
 
 ## Create Admin Certificates
 
-Because we could run kubectl on any machine (no necessarily on master nodes), hence, we need to encrypt the network between kubectl and kube-api-server. 
+Because we could run kubectl on any machine (not necessarily on master nodes), hence, we need to encrypt the network between kubectl and kube-api-server. 
 
 
 ```shell
