@@ -162,6 +162,7 @@ Before=docker.service
 
 [Service]
 EnvironmentFile=/usr/k8s/bin/env/flannel
+ExecStartPre=-/usr/bin/mkdir /run/flannel
 ExecStart=/usr/k8s/bin/flanneld \
   $FLANNEL_CERTS \
   $ETCD_ENDPOINTS \
