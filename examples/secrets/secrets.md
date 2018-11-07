@@ -1,5 +1,6 @@
 # Secrets
 
+## Creating Secrets in Kubernetes
 Secrets in Kubernetes is to provide a means to pass credentials to the Pods. Secrets is a a Kubernetes native to get credentials, third party Vault services can also be used as credential store for the apps.
 
 Secrets can be used as:
@@ -25,4 +26,37 @@ Get secrets from Kubernets:
 ```shell
 $ kubectl get secret db-user-pass -o yaml
 $ kubectl get secret db-user-pass -o yaml
+```
+
+## Using Secrets in Pods
+
+Secrets can be exposed as environment virables of containers in a Pod.
+```shell
+...
+	env:
+      - name: SECRET_USERNAME
+        valueFrom:
+          secretKeyRef: 
+            name: db-secret
+            key: username
+      - name: SECRET_PASSWORD
+        valueFrom:
+          secretKeyRef: 
+            name: db-secret
+            key: password
+...
+```
+
+Secrets can also be exposed by mounting into a directory of a container.
+```shell
+...
+	volumeMounts:
+    - name: secret-volume
+      mountPath: /etc/secrets
+      readOnly: true
+  volumes:
+  - name: secret-volume
+    secret:
+      secretName: db-secret
+...
 ```
