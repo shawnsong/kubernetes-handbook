@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-config-in-file
+  labels:
+    app: busybox-config-in-file
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28.4
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/config
+      readOnly: true
+  volumes:
+  - name: config-volume
+    configMap:
+      name: springboot-config
