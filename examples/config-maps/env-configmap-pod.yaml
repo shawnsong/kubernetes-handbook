@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-config-in-env
+  labels:
+    app: busybox-config-in-env
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28.4
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+    env:
+      - name: serverPort
+        valueFrom: 
+          configMapKeyRef:
+            name: springboot-config
+            key: server.port
+      - name: applicationName
+        valueFrom: 
+          configMapKeyRef:
+            name: springboot-config
+            key: spring.application.name
