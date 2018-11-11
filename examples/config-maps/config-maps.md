@@ -20,4 +20,10 @@ $ kubectl create -f file-configmap-pod.yaml
 
 ```shell
 $ kubectl create -f env-configmap-pod.yaml
+
+$ kubectl exec -it busybox-config-in-env sh
+# inside the container
+$ env
+serverPort=server.port=9090
+spring.application.name=demoservice
 ```

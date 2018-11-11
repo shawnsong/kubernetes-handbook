@@ -17,9 +17,4 @@ spec:
         valueFrom: 
           configMapKeyRef:
             name: springboot-config
-            key: server.port
-      - name: applicationName
-        valueFrom: 
-          configMapKeyRef:
-            name: springboot-config
-            key: spring.application.name
+            key: application.properties
