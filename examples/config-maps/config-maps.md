@@ -11,7 +11,13 @@ $ kubectl create configmap springboot-config --from-file=application.properties
 
 ## Using ConfigMaps
 
+### Using ConfigMaps as Mounted Volumes
 ```shell
-$ kubectl create -f pod-using-configmap.yaml
-pod "busybox-config-in-file" created
+$ kubectl create -f file-configmap-pod.yaml
+```
+
+### Using ConfigMaps as Environment Variables
+
+```shell
+$ kubectl create -f env-configmap-pod.yaml
 ```
