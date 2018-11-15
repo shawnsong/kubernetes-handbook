@@ -96,3 +96,27 @@ export KUBE_APISERVER="https://${MASTER_URL}"
 kubectl config set-cluster kubernetes --server=${KUBE_APISERVER}
 ```
 We removed the 6443 port number from the server URL because HAProxy will redirect HTTPS request to 6443.
+
+## Grant `cluster-admin` to Kubectl
+
+As mentioned above, Kubectl interacts with the cluster via REST calls to API Server, which means it needs to be authenticated and authorised by the API Server. In the above example `BOOTSTRAP_TOKEN` is used for Kubectl. It is binded to `system:node-bootstrapper` which does not provide full access controls to the cluster. To give it full access, the ClusterRole `cluster-admin` can be used. 
+
+The following steps need to be performed to achieve that:
+
+1. Create a ServiceAccount for Kubectl. This will create a Secret associated with the ServiceAccount.
+2. Create a ClusterRoleBinding. This is to bind the `cluster-admin` ClusterRole to the ServiceAccount.
+3. Copy the secret to Kubectl config file
+
+```shell
+# create a ServiceAccount
+$ kubectl create serviceaccount kubectl-clusteradmin
+# create the ClusterROleBinding
+
+$ kubectl create -f kubectl-admin-access.yaml
+
+# get the Secret 
+$ kubectl get secret
+kubectl-clusteradmin-token-g7v59
+# copy the token and paste into ~/.kube/config
+$ kubectl describe secret kubectl-clusteradmin-token-g7v59
+```
