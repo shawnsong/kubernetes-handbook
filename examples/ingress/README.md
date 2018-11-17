@@ -9,7 +9,7 @@ The easiest way to expose services from within a cluster is to use `NodePort`. I
 $ kubectl create -f nginx-ingress-controller.yaml
 ```
 
-The first time when I ran this command, I did not see any pod created. To check what might cause the issue, use `kubectl describe` to check different resources.
+The first time when I ran this command, no pod was created. To check what might cause the issue, `kubectl describe` and `kubectl logs` are useful tools.
 
 ```shell
 $ kubectl describe dadmonset nginx-ingress-controller
@@ -25,7 +25,7 @@ Events:
 ...
 ```
 
-The first error message only appered once while the second one `SecurityContext.RunAsUser is forbidden` keeps repeating and causes the Pod failed to be created. After some research on Google and github.com, the root cause is that `ServiceContext` is denied by the API Server. Remove `SecurityContextDeny` from [apiconfig](../../environment/apiserver) should resolve this issue.
+The first error message only appered once while the second one `SecurityContext.RunAsUser is forbidden` keeps repeating and causes the Pod failed to be created. After some research on Google and github.com, the root cause is that `ServiceContext` is denied by the API Server. Remove `SecurityContextDeny` from [apiconfig](../../environment/apiserver) and restart all API Server should resolve this issue.
 
 ```shell
 $ kubectl describe ds nginx-ingress-controller
@@ -72,3 +72,4 @@ Events:
 ```
 Two Pods are created because there are two worker nodes (minons) running in the cluster.
 
+## Create Ingress Rules
