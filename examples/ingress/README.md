@@ -100,3 +100,4 @@ tea-6bcb468bfc-8c2kt             1/1       Running   0          39s
 tea-6bcb468bfc-bqs96             1/1       Running   0          39s
 tea-6bcb468bfc-sth9v             1/1       Running   0          39s
 ```
+Use `curl` To check if the Ingress Controller is working. Open a browser and visit one of the node: `http://192.168.1.51`. It should return the default backend `echoservice`. Then navigate to `/tea` or `/coffee`. Instead of showing the tea or coffee services, it still shows the default backend. This is because the Ingress rules expected `cafe.example.com` as the host. Edit `/etc/hosts/` and added an entry `192.168.1.51  cafe.example.com` and visit `http://cafe.example.com/tea`. This should return responses from `tea`.
