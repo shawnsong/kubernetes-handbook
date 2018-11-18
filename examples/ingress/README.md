@@ -5,6 +5,11 @@ Ingress provide a means to expose services that can be accessible from outside t
 The easiest way to expose services from within a cluster is to use `NodePort`. If there are very few services within the cluster, there is no problem of using this method. However, as the number of services grows, the downsides of this method starts to hurt. First of all, only ports between 30000-32767 are allowed for `NodePort`. Secondly, it requires more work to configure the load balancer once the nodes are shifted. 
 
 ## Create the Nginx Ingress Controller
+Create the default backend first before creating the Ingress Controller:
+```shell
+$ kubectl create -f echoservice.yaml
+```
+Then create the Ingress Controller:
 ```shell
 $ kubectl create -f nginx-ingress-controller.yaml
 ```
@@ -70,6 +75,28 @@ Events:
   Normal   SuccessfulCreate  25s                daemonset-controller  Created pod: nginx-ingress-controller-b9hf7
   Normal   SuccessfulCreate  25s                daemonset-controller  Created pod: nginx-ingress-controller-szpzd
 ```
-Two Pods are created because there are two worker nodes (minons) running in the cluster.
+Two Pods are created in this case because there are two worker nodes (minons) running in the cluster at the time of writing this handbook.
+
 
 ## Create Ingress Rules
+
+The example used here is from [nginx-ingress-examples](https://github.com/nginxinc/kubernetes-ingress). There are two rules: `/tea` and `/coffee` are two services from the same host `cafe.example.com`. 
+
+```shell
+$ kubectl create -f cafe-ingress.yaml
+```
+
+Create the Pods and Services. This should create 3 `tea` Pods and 2 `coffee` Pods.
+```shell
+$ kubectl craete -f cafe.yaml
+$ kubectl get pods
+NAME                             READY     STATUS    RESTARTS   AGE
+coffee-f5cd54465-rslxj           1/1       Running   0          39s
+coffee-f5cd54465-zf4qr           1/1       Running   0          39s
+echoheaders-jzs79                1/1       Running   0          1h
+nginx-ingress-controller-b9hf7   1/1       Running   8          1h
+nginx-ingress-controller-szpzd   1/1       Running   8          1h
+tea-6bcb468bfc-8c2kt             1/1       Running   0          39s
+tea-6bcb468bfc-bqs96             1/1       Running   0          39s
+tea-6bcb468bfc-sth9v             1/1       Running   0          39s
+```
