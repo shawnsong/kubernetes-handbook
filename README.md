@@ -173,8 +173,24 @@ Please refer [setup-services](wrap-up/setup-services.md) for the configurations.
 
 ## 11. Kubernetes Addons
 ### 11.1 Setup KubeDNS and CoreDNS
+Please refer [setup-kube-dns](addons/kube-dns/setup-kube-dns.md) for the instructions.
 
 ### 11.2 Setup Dashboard
 
 
+### 11.3 Setup Prometheus
 
+
+## 12. Examples
+This section provides examples on how to operate the cluster and 
+
+### ConfigMaps
+
+
+### Secrets
+
+
+### Service Accounts
+
+
+### Ingress and Ingress Controllers
