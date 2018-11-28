@@ -162,7 +162,7 @@ Before=docker.service
 
 [Service]
 EnvironmentFile=/usr/k8s/bin/env/flannel
-ExecStartPre=-/usr/bin/mkdir /run/flannel
+ExecStartPre=-/usr/bin/mkdir -p /run/flannel
 ExecStart=/usr/k8s/bin/flanneld \
   $FLANNEL_CERTS \
   $ETCD_ENDPOINTS \
@@ -237,6 +237,7 @@ Documentation=https://kubernetes.io/docs/concepts/overview/components/#kubelet h
 [Service]
 WorkingDirectory=/var/lib/kubelet
 EnvironmentFile=-/usr/k8s/bin/env/kubelet
+ExecStartPre=-/usr/bin/mkdir -p /var/lib/kubelet
 ExecStart=/usr/k8s/bin/kubelet \
   $KUBELET_ADDRESS \
   $KUBELET_HOSTNAME \
