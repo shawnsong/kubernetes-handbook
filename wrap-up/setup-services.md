@@ -157,7 +157,6 @@ Description=Flanneld overlay address etcd agent
 After=network.target
 After=network-online.target
 Wants=network-online.target
-After=etcd.service
 Before=docker.service
 
 [Service]
