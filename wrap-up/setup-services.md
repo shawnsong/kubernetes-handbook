@@ -168,6 +168,7 @@ ExecStart=/usr/k8s/bin/flanneld \
   $ETCD_PREFIX
 ExecStartPost=/usr/k8s/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker
 Restart=on-failure
+Type=notify
 
 [Install]
 WantedBy=multi-user.target
@@ -240,7 +241,6 @@ ExecStartPre=-/usr/bin/mkdir -p /var/lib/kubelet
 ExecStart=/usr/k8s/bin/kubelet \
   $KUBELET_ADDRESS \
   $KUBELET_HOSTNAME \
-  $KUBELET_KUBECONFIG \
   $CLUSTER_DNS \
   $CLUSTER_DOMAIN \
   $KUBE_LOGTOSTDERR \

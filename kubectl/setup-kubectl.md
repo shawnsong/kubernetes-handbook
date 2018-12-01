@@ -99,7 +99,7 @@ We removed the 6443 port number from the server URL because HAProxy will redirec
 
 ## Grant `cluster-admin` to Kubectl
 
-As mentioned above, Kubectl interacts with the cluster via REST calls to API Server, which means it needs to be authenticated and authorised by the API Server. In the above example `BOOTSTRAP_TOKEN` is used for Kubectl. It is binded to `system:node-bootstrapper` which does not provide full access controls to the cluster. To give it full access, the ClusterRole `cluster-admin` can be used. 
+As mentioned above, Kubectl interacts with the cluster via REST calls to API Server, which means it needs to be authenticated and authorised by the API Server. In the above example `BOOTSTRAP_TOKEN` is used for Kubectl. It is binded to `system:node-bootstrapper` which does not provide full access controls to the cluster. To give it full access, the predefined ClusterRole `cluster-admin` can be used. 
 
 The following steps need to be performed to achieve that:
 
