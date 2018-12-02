@@ -29,11 +29,22 @@ It is possible to see this error:
 Error: configmaps is forbidden: User "system:serviceaccount:kube-system:default" cannot list configmaps in the namespace "kube-system"
 ```
 
-It means Helm does not have permission to run command in `kube-system` namespace. Just create the RBAC for Helm:
+It means Helm does not have permission to run command in `kube-system` namespace so we need to create the RBAC for Helm first. Run the following commands directly to create RBAC rules:
 
 ```shell
 $ kubectl create serviceaccount --namespace kube-system tiller
 $ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-$ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
+$ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'s
 $ helm init --service-account tiller --upgrade
 ```
+or use the yaml files:
+
+```shell
+$ kubectl create -f helm-access.yaml
+# serviceaccount "tiller-serviceaccount" created
+# clusterrolebinding "tiller-cluster-role-binding" created
+$ kubectl patch deploy --namespace kube-system tiller-deploy --patch "$(cat helm-access-patch.yaml)"
+# deployment "tiller-deploy" patched
+```
+
+
