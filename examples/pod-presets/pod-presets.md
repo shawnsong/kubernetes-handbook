@@ -9,6 +9,12 @@ Pod Preset is Used for injecting common information to all Pods at creation time
 
 Label selectors can be used to filter the pods on which Pod Presets are applicable. This is useful when you don't want to apply preset to all pods.
 
+## Enable Pod Preset in the Cluster
+Pod Preset is not enabled by default, to enable it in the cluster, the following needs to be done:
+
+1. Enable the API type settings.k8s.io/v1alpha1/podpreset. This can be done by including settings.k8s.io/v1alpha1 in the `--runtime-config`: `--runtime-config=settings.k8s.io/v1alpha1`
+2. Enable admission controller `PodPreset`: `--admission-control=...,PodPreset,...`
+
 ## Pod Preset Examples
 
 Below is an example of how Pod Preset can help to concise Pod configurations.

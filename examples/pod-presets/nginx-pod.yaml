@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: service-1
+  labels:
+    role: worker
+spec:
+  containers:
+    - name: website
+      image: nginx
+      ports:
+        - containerPort: 80
