@@ -14,16 +14,18 @@ Label selectors can be used to filter the pods on which Pod Presets are applicab
 Below is an example of how Pod Preset can help to concise Pod configurations.
 
 ### Step 1 : Create Kubernetes Secret
-This step is common for both old way of injecting information and new way of using Preset.
+This step is common for both old way of injecting information and new way of using PodPreset.
 ```shell
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mysecret
+  name: activemq-secret
 type: Opaque
 data:
-  rabbit-username: YWRtaW4=
-  rabbit-password: MWYyZDFlMmU2N2Rm
+  # echo "admin" | base64
+  username: YWRtaW4K 
+  # echo "password" | base64
+  password: cGFzc3dvcmQK
 ```
 ### Step 2 : Inject Secret into Pod
 #### 2.1 : Old and Inefficient Way
@@ -42,19 +44,19 @@ spec:
       - name: SECRET_USERNAME
         valueFrom:
           secretKeyRef:
-            name: mysecret
-            key: rabbit-username
+            name: activemq-secret
+            key: username
       - name: SECRET_PASSWORD
         valueFrom:
           secretKeyRef:
-            name: mysecret
-            key: rabbit-password
+            name: activemq-secret
+            key: password
   restartPolicy: Never
 ```
-This needs to be done in every microservice.
+Notice that the `env` section needs to be done in every microservice that is using ActiveMQ. If there are 10 microservices in the system that are using ActiveMQ (which is not uncommon at all), that section needs to be repeated 10 times.
 
 #### 2.2 Using Pod Preset
-a] Create a Pod Preset yaml : Following example creates Pod Preset for RabbitMQ secret. Label selector will make sure that this Preset is applied to pods with label role = worker
+- Create a Pod Preset yaml : Following example creates Pod Preset for RabbitMQ secret. Label selector will make sure that this Preset is applied to pods with label role = worker
 
 apiVersion: settings.k8s.io/v1alpha1
 kind: PodPreset
@@ -63,19 +65,20 @@ metadata:
 spec:
   selector:
     matchLabels:
-      role: worker
+      role: business-service
   env:
-     - name: SECRET_USERNAME
-       valueFrom:
-         secretKeyRef:
-           name: mysecret
-           key: rabbit-username
-     - name: SECRET_PASSWORD
-       valueFrom:
-         secretKeyRef:
-           name: mysecret
-           key: rabbit-password
-b] Create one or more ( 100s of) Pod configurations with label role: worker.
+    - name: SECRET_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: mysecret
+          key: rabbit-username
+    - name: SECRET_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysecret
+          key: rabbit-password
+
+- Create one or more ( 10s of) Pod configurations with label role: business-service.
 
 apiVersion: v1
 kind: Pod
