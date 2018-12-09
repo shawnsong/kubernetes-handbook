@@ -36,7 +36,7 @@ Reboot the server.
 
 ```shell
 # check selinux is disabled
-getenenforce
+getenforce
 Disabled
 ```
 

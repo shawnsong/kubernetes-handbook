@@ -3,15 +3,25 @@
 Helm for Kubernetes is similar to Yum for RedHat Linux. It is a package management tool specifically for Kubernetes to version control the releases of applications running in the cluster. Helm is consisted of two components: the Helm client and the Tiller server.
 
 ## Install Helm
+Download a binary release of the Helm client from the official [releases page](https://github.com/helm/helm/releases).
 
+```shell
+# unzip it
+$ tar -zxvf helm-v2.0.0-linux-amd64.tgz
+# move it to 
+mv linux-amd64/helm /usr/local/bin/helm
+```
 
 ## Install Tiller
+```shell
+$ helm init
+```
 
-
-Run `helm version` to see the currently installed version of Helm and Tiller. If you see an error like this:
+Run `helm version` to see the currently installed version of Helm and Tiller. If you see errors like this:
 ```shell
 unable to do port forwarding: socat not found.`
 ```
+
 Install `socat` on all Kubernetes nodes by running:
 ```shell
 $ sudo yum install socat

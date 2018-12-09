@@ -255,6 +255,20 @@ KillMode=process
 WantedBy=multi-user.target
 ```
 
+> **Important Note from Docker official website: For security reasons, Docker configures the iptables rules to prevent containers from forwarding traffic from outside the host machine, on Linux hosts. Docker sets the default policy of the FORWARD chain to DROP. In Docker 1.12 and earlier, the default FORWARD chain policy was ACCEPT. After Docker 1.13 or later, this default is changed to `false`.** 
+
+To make Pods reachable from different hosts, two configurations needs to be done:
+1. IP forwarding needs to be enabled on the host.
+```shell
+$ sysctl net.ipv4.conf.all.forwarding
+net.ipv4.conf.all.forwarding = 1
+```
+If the value is 0, we can either add `net.ipv4.conf.all.forwarding=1` to `/etc/sysctl.d/` and `sysctl -p /etc/sysctl.conf` 
+or run `sysctl -w net.ipv4.ip_forward=1` at startup.
+
+2. Set iptables `FORWARD` policy to `ACCEPT`: `iptables -P FORWARD ACCEPT`
+This can be done by having another `systemd` service to run both command.
+
 ### Create `systemd` Unit for Kube-Proxy
 
 Create working directory first
