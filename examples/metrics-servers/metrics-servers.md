@@ -53,8 +53,10 @@ This should return CPU/Memory usage data.
 
 ### Trouble Shooting
 The installation of Metrics Server could be problematic. Here are a few tips to diagnose issues:
-- Make sure `metrics-server` is running in `kube-system` systems. Use `kubectl logs` to check causes. It could be caused by certificates issues. If that's the case, make sure the generated certificates are distributed to all API Servers.
+- Make sure `metrics-server` is running in `kube-system` systems. Use `kubectl logs` to check issues. It could be caused by certificates issues. If that's the case, make sure the generated certificates are distributed to all API Servers.
 - Make sure the Pod is reachable from other nodes. Ping the Pod should return results.
 - Make sure the Pod is reachable from **EVERY** API Server. a) Flannel runs on API Server. b) Ping the Pod IP from each API Server should return results.
-- Make sure the Metrics `APIService` is running. `kubectl get apiservice` 
-- If the Pod is running but `kubectl top` returns errors like `Error from server (ServiceUnavailable): the server is currently unable to handle the request`, check API Server logs: `journal -u kube-apiserver -f` or add '`v=10` in the `kubectl top` command to find out at what step it fails at.
+- Make sure the Metrics `APIService` is running. `kubectl get apiservice`.
+- If the Pod is running but `kubectl top` returns errors like `Error from server (ServiceUnavailable): the server is currently unable to handle the request`, check API Server logs: `journal -u kube-apiserver -f` or add '`v=10` in the `kubectl top` command to find out at what step it fails at. 
+
+The problem I have encountered is that in my initial setup of the cluster, not all API Servers are able to reach the metrics server Pods. That has caused `kubectl top` hangs sometimes, and the CPU usage on API Servers is extremely high. 
