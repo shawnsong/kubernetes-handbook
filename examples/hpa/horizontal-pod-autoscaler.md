@@ -93,7 +93,7 @@ Also, `kubectl get pods` should show some pods are still creating.
 
 ## Stop load
 
-Go back to the busybox terminal and press `Ctrl + C` to stop the process. Wait for a few minutes and the load should go down and the deployment should scale down to 1 instance again.
+Go back to the busybox container terminal and press `Ctrl + C` to stop the process. Wait for a few minutes and the load should go down and the deployment should scale down to 1 instance again.
 
 ## Reference
 
