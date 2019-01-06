@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-on-high-end-node
+  labels:
+    role: fast-worker
+spec:
+  containers:
+    - name: website
+      image: nginx
+      ports:
+        - containerPort: 80
+  nodeSelector:
+    hardware: high

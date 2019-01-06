@@ -60,3 +60,8 @@ The installation of Metrics Server could be problematic. Here are a few tips to 
 - If the Pod is running but `kubectl top` returns errors like `Error from server (ServiceUnavailable): the server is currently unable to handle the request`, check API Server logs: `journal -u kube-apiserver -f` or add '`v=10` in the `kubectl top` command to find out at what step it fails at. 
 
 The problem I have encountered is that in my initial setup of the cluster, not all API Servers are able to reach the metrics server Pods. That has caused `kubectl top` hangs sometimes, and the CPU usage on API Servers is extremely high. 
+
+### References
+https://github.com/kubernetes-incubator/metrics-server/issues/131
+https://github.com/kubernetes-incubator/metrics-server/issues/45
+https://github.com/kubernetes-incubator/metrics-server/issues/105
