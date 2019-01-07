@@ -365,3 +365,5 @@ Check if the Service and Pod are working correctly from worker node:
 curl 10.254.189.113:8000
 # should return nginx welcome page
 ```
+
+> **Note:** use `mkdir -p` to create folder in the `systemd` services so if the folder exists this command does not fail which does not fail the start of the service. Otherwise, the service could fail to start if the `PreStartExec` failed on execution.

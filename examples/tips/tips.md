@@ -1,11 +1,12 @@
-# Kubernetes Tips
+# Kubernetes Trouble-shooting Tips
 
+## Pod cannot be deleted
 Pods cannot be deleted if it's host goes down (the host state becomes `NotReady` and Pods state become `Unknown`). This is an expected behavior since 1.5. Below command can be used to force delete the Pods:
 ```shell
 kubectl delete pod <pod_name> --grace-period=0 --force
 ```
 
-Cannot ping Pods IP from a different host. 
+## Cannot ping Pods IP from a different host. 
 This could be caused by various setup issues: flannel is not running properly, firewall blocks the ICMP packet, IP forwarding is disabled etc. To diagnose this, the following steps might be helpful to narrow down where the actual problem is. 
 1. Ping the machine of where the Pod is running and see if the machine is reachable, (`kubectl get pods -o wide` to get the machine IP). If this works it means the network is fine between those two nodes. 
 2. Check if `firewalld` is running. CentOS 7 is default to use `firewalld`. `systemctl stop firewalld` to stop the firewall.
