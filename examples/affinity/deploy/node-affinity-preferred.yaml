@@ -12,15 +12,15 @@ spec:
       affinity:
         nodeAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
+          - weight: 1
+            preference:
+              matchExpressions:
               - key: hardware
                 operator: In
                 values:
-                - high
+                - low
       containers:
-      - name: k8s-demo
+      - name: node-affinity-website
         image: nginx
         ports:
-        - name: nodejs-port
-          containerPort: 3000
+          - containerPort: 80
