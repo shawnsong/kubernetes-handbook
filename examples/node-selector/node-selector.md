@@ -49,5 +49,4 @@ pod-on-low-end-node               1/1     Running   0          89s   172.30.10.8
 ```
 
 ## References
-
 https://kubernetes.io/docs/concepts/configuration/assign-pod-node/

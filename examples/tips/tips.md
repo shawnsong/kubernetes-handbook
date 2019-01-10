@@ -32,3 +32,9 @@ $ ip a
 4. If Docker gateway is reachable from the other node, check if IP forwarding is enabled: `sysctl net.ipv4.conf.all.forwarding`. If the value is `0`, run `sysctl net.ipv4.conf.all.forwarding=1` to enable it temporarily (will not persist after reboot) or add `net.ipv4.conf.all.forwarding=1` to `/etc/sysctl.d/` and reboot the system.
 5. Check if `iptables` `FORWARD` policy is `ACCEPT`. Since Docker 1.13, the policy is default to `DROP`. To enable it, run `sudo iptables -P FORWARD ACCEPT`.
 [This](https://docs.docker.com/v17.09/engine/userguide/networking/default_network/container-communication/#communicating-to-the-outside-world) article explains a lot details about the Docker network.
+
+## Remove labels from nodes
+
+To remove a label from a node, use: `kubectl label node <nodename> <labelname>-`. For example: `kubectl label nodes 192.168.1.52 hardware-` to remove `hardware` label from `192.168.1.52`.
+
+To update a label on a node, use `--overwrite` flag. For example: `kubectl label nodes 192.168.1.52 hardware=high --overwrite` will update `hardware` to `high` and overwrite its old value.
