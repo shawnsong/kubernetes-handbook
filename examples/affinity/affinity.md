@@ -6,13 +6,46 @@ Kubernetes can do node affinity and pod affinity. Node affinity is similar to no
 
 ## Node Affinity
 
-There are two types for node affinity:
+There are 2 types for node affinity:
 1. requiredDuringSchedulingIgnoredDuringExecution
 2. preferredDuringSchedulingIgnoredDuringExecution
 
 The first is a hard requirement like nodeSelector (the cluster has to meet the rule to schedule a Pod) and the second is a soft requirement.
 
-## Schedule Pods using `requiredDuringSchedulingIgnoredDuringExecution`
+## Node Affinity Examples and Explanations
+
+```shell
+apiVersion: v1
+kind: Pod
+metadata:
+  name: with-node-affinity
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/e2e-az-name
+            operator: In
+            values:
+            - e2e-az1
+            - e2e-az2
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: harddrive
+            operator: In
+            values:
+            - ssd
+  containers:
+  - name: with-node-affinity
+    image: k8s.gcr.io/pause:2.0
+```
+
+This node affinity rule says the pod can only be placed on a node with a label whose key is `kubernetes.io/e2e-az-name` and whose value is either `e2e-az1` or `e2e-az2` (this is a hard requirement). In addition, apart from this requirement, nodes with label of `harddrive=ssd` should be preferred but not mandatory (soft requirement).
+
+## Node Affinity Demo
 
 Please refer to [this](./deploy/node-affinity-required.yaml) file for Pod deployment. To schedule this Pod, we can see that it requires `hardware` in `high` *hard* requirement.
 
@@ -60,7 +93,7 @@ node/192.168.1.52 labeled
 $ kubectl get po
 ```
 
-After applying the label to `192.168.1.52` the Pods are still running on `192.168.1.51`, which is also as expected because affinith/anti-affinity is only relevant during Pod creation.
+After applying the label to `192.168.1.52` the Pods are still running on `192.168.1.51`, which is also as expected because affinity/anti-affinity is only relevant during Pod creation.
 
 Now, delete the Pod and recreate them:
 ```shell
@@ -77,3 +110,13 @@ node-affinity-77968676d9-qnb4p    1/1     Running   0          21s    172.30.81.
 ```
 
 The Pods are scheduled on both `51` and `52`.
+
+## Pod anti-affinity
+
+Similar to node affinity, there are 2 types of Pod affinity as well:
+
+1. requiredDuringSchedulingIgnoredDuringExecution
+2. preferredDuringSchedulingIgnoredDuringExecution
+
+A possible use case for Pod affinity is that co-related Pods are better scheduled on the same node. For example, a web application uses a cache such as redis. The application Pod should be co-located with the Redis Pod as much as possible. 
+
