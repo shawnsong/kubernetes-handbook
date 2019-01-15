@@ -45,6 +45,13 @@ spec:
 
 This node affinity rule says the pod can only be placed on a node with a label whose key is `kubernetes.io/e2e-az-name` and whose value is either `e2e-az1` or `e2e-az2` (this is a hard requirement). In addition, apart from this requirement, nodes with label of `harddrive=ssd` should be preferred but not mandatory (soft requirement).
 
+In the above example, operator `In` is used to select nodes. All supported operators are: `In`, `NotIn`, `Exists`, `DoesNotExist`, `Gt` and `Lt`. `NotIn` and `DoesNotExist` are used for anti-affinity.
+
+A few important rules:
+- If `nodeSelector` and `nodeAffinity` are specified, a Pod can **only** be scheduled if **both** requirements are met. 
+- if multiple `nodeSelectorTerms` are specified, **only one** needs to be met to schedule a Pod.
+- If multiple `matchExpressions` associated with the `nodeSelectorTerms` are specified, **all** `matchExpressions` need to be satisfied to schedule a Pod.
+
 ## Node Affinity Demo
 
 Please refer to [this](./deploy/node-affinity-required.yaml) file for Pod deployment. To schedule this Pod, we can see that it requires `hardware` in `high` *hard* requirement.
