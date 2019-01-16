@@ -14,7 +14,7 @@ The first is a hard requirement like nodeSelector (the cluster has to meet the r
 
 ## Node Affinity Examples and Explanations
 
-```shell
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -125,5 +125,47 @@ Similar to node affinity, there are 2 types of Pod affinity as well:
 1. requiredDuringSchedulingIgnoredDuringExecution
 2. preferredDuringSchedulingIgnoredDuringExecution
 
-A possible use case for Pod affinity is that co-related Pods are better scheduled on the same node. For example, a web application uses a cache such as redis. The application Pod should be co-located with the Redis Pod as much as possible. 
+A possible use case for Pod affinity is that a web application uses a cache such as redis. Hence, the application Pod is better co-located with the Redis Pod as much as possible because they need *communicate* with each other constantly. 
 
+Pod anti-affinity should **always** be used with `preferredDuringSchedulingIgnoredDuringExecution` because it means spread the Pod in the whole cluster and `preferredDuringSchedulingIgnoredDuringExecution` would make no sense if the number of the Pods is greater than the number of nodes.
+
+## Pod Affinity Examples and Explanations
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: service-1
+  labels:
+   	app: service-1
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - redis-1
+        topologyKey: kubernetes.io/hostname
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - service-2
+          topologyKey: kubernetes.io/hostname
+  containers:
+  - name: website
+    image: nginx
+    ports:
+        - containerPort: 80
+```
+
+In this example, the Pod is `service-1` of a web application. It needs to scheduled on nodes that have a label whose key is `kubernetes.io/hostname` and value `V` which has Pod of label `app=redis-1` running on the node. For example, if `node1` has label `kubernetes.io/hostname` (it does not matter what the value is, as long as it has this label), also it has a Pod with label `app=redis-1` running on the node, then this Pod can be scheduled on `node1`.
+
+Also, it says it's better to not schedule this Pod on nodes that have a label whose key is `kubernetes.io/hostname` and value is `V` that has Pod of lable `app=service-2` running on it.
