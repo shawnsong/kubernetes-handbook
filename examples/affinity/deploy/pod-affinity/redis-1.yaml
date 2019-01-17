@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis-for-service-1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis-for-service-1
+    spec:
+      containers:
+        - name: redis
+          image: nginx
+          ports:
+            - containerPort: 80
