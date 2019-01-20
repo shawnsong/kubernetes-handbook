@@ -189,8 +189,18 @@ This section provides examples on how to operate the cluster and
 
 ### Secrets
 
+### Pod Preset
+
 
 ### Service Accounts
 
+### Daemon Sets
+
+### Node Selector
+
 
 ### Ingress and Ingress Controllers
+
+### Metrics Server
+
+### Horizontal Pod Autoscaller
