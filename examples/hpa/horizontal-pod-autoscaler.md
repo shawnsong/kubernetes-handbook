@@ -44,7 +44,7 @@ deployment.apps/php-apache created
 
 ## Create Horizontal Pod Autoscaler
 
-The following command will create a Horizontal Pod Autoscaler that maintains between 1 and 10 replicas of the Pods controlled by the php-apache deployment that is created above. Roughly speaking, HPA will increase and decrease the number of replicas (via the deployment) to maintain an average CPU utilization across all Pods of 50% (since each pod requests 200 milli-cores by kubectl run, this means average CPU usage of 100 milli-cores).
+The following command will create a Horizontal Pod Autoscaler that maintains between 1 and 10 replicas of the pods controlled by the php-apache deployment that is created above. Roughly speaking, HPA will increase and decrease the number of replicas (via the deployment) to maintain an average CPU utilization across all pods of 50% (since each pod requests 200 milli-cores by kubectl run, this means average CPU usage of 100 milli-cores).
 
 ```shell
 $ kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
@@ -76,7 +76,7 @@ $ while true; do wget -q -O- http://php-apache.default.svc.cluster.local; done
 ```
 If everything goes OK, we should see `OK!`s printed on the terminal endlessly.
 
-Wait for a while and check the Pod load
+Wait for a while and check the pod load
 ```shell
 $ kubectl get hpa
 NAME         REFERENCE                     TARGET    MINPODS   MAXPODS   REPLICAS   AGE
