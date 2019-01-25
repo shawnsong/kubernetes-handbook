@@ -38,3 +38,12 @@ $ ip a
 To remove a label from a node, use: `kubectl label node <nodename> <labelname>-`. For example: `kubectl label nodes 192.168.1.52 hardware-` to remove `hardware` label from `192.168.1.52`.
 
 To update a label on a node, use `--overwrite` flag. For example: `kubectl label nodes 192.168.1.52 hardware=high --overwrite` will update `hardware` to `high` and overwrite its old value.
+
+## PING from virtual machine results in (DUP!) 
+This is Virtual machine network connectivity issues with VirtualBox. Using ping command will cause duplicate packets.
+
+To mitigate this, we need to disable host operating system's IP forwarding(which we do not want to because we need that so containers from different hosts can reach each other):
+```shell
+# sysctl -w net.ipv4.ip_forward=0
+net.ipv4.ip_forward = 0
+```
