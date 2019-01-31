@@ -32,3 +32,27 @@ $ kubectl create secret generic ceph-secret-kube \
     --from-literal=key='AQC0QVBcxVPvExAAOoA4VyxEbL4jVSU3QlmMcA==' \
     --namespace=kube-system
 ```
+
+Make sure `parameters.monitors` points to the correct Ceph monitor's IP Address and port. If the firewall is enabled on Ceph monitor, make sure that rules are added so that the firewall does not block the inbound connections. For example, create a file called `ceph-mon.xml` under `/etc/firewalld/services` with the following content:
+```shell
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>ceph-mon</short>
+  <description>Ceph Monitor</description>
+  <port protocol="tcp" port="6800-7300"/>
+</service>
+```
+And enable this rule:
+```
+$ sudo firewall-cmd --zone=public --add-service=ceph-mon --permanent
+```
+
+```shell
+$ kubectl exec -it pod-with-pvc /bin/sh
+/ # ls
+bin   dev   etc   home  mnt   proc  root  sys   tmp   usr   var
+/ # ls /mnt/
+SUCCESS     lost+found
+```
+
+We can see that the file `SUCCESS` is created under `/mnt/` directory, which means our persistent volume is working. Now, if we start another `busybox` and change the `command` to `sleep 3600` and still mounting the same PV, we can still see that `SUCCESS` is inside `/mnt/` directory. AWESOME!!
