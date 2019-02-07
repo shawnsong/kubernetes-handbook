@@ -1,5 +1,7 @@
 # Connect Ceph and Kubernetes
 
+This examples shows how to connect Ceph with Kubernetes to provide a storage solution for Kubernetes.
+
 Get ceph client admin key
 ```shell
 $ sudo ceph --cluster ceph auth get-key client.admin
@@ -56,3 +58,9 @@ SUCCESS     lost+found
 ```
 
 We can see that the file `SUCCESS` is created under `/mnt/` directory, which means our persistent volume is working. Now, if we start another `busybox` and change the `command` to `sleep 3600` and still mounting the same PV, we can still see that `SUCCESS` is inside `/mnt/` directory. AWESOME!!
+
+
+## References
+[RBD Volume Provisioner for Kubernetes 1.5+](https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd)
+[Alen Komljen's blog](https://akomljen.com/using-existing-ceph-cluster-for-kubernetes-persistent-storage/)
+[Ceph Installation Guide](http://docs.ceph.com/docs/master/start/)
