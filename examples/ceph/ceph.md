@@ -1,13 +1,22 @@
-# Connect Ceph and Kubernetes
+# Integrate Ceph with Kubernetes
 
-This examples shows how to connect Ceph with Kubernetes to provide a storage solution for Kubernetes.
+This examples shows how to integrate Ceph with Kubernetes to provide a storage solution for Kubernetes.
 
-Get ceph client admin key
+`rbd-provisioner` is a dynamic volume provisioner for Kubernetes. To connect an existing Ceph cluster to Kubernetes, it needs to be deployed in Kubernetes first.
+
+For any client that interacts with Ceph, it needs to be authenticated. In this case, the `rbd-provisioner` will need to have credentials to communicate with Ceph cluster to provision PVCs.
+
+> Note: the ceph cluster used in this example is from [this](https://github.com/shawnsong/ceph-handbook) setup.
+
+## Create Ceph admin key for `rbd-provisioner`
+
+On one of the Ceph monitor nodes, run this command to get ceph admin credentials first:
 ```shell
 $ sudo ceph --cluster ceph auth get-key client.admin
+AQBd6Upc798MDhAAcLAwKH00l978VWMgFbivuA==
 ```
 
-create the secret for admin
+Then create the secret for admin:
 ```shell
 $ kubectl create secret generic ceph-secret \
     --type="kubernetes.io/rbd" \
@@ -15,8 +24,8 @@ $ kubectl create secret generic ceph-secret \
     --namespace=kube-system
 ```
 
+## Create a data pool for Kubernetes
 
-create a pool for Kubernetes
 ```shell
 $ sudo ceph osd pool create kube 8
 pool 'kube' created
