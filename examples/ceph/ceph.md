@@ -24,12 +24,14 @@ $ kubectl create secret generic ceph-secret \
     --namespace=kube-system
 ```
 
-## Create a data pool for Kubernetes
+## Create a Data Pool for Kubernetes
+
+On one of the Ceph monitor nodes, create a Ceph user called `kube`:
 
 ```shell
 $ sudo ceph osd pool create kube 8
 pool 'kube' created
-sudo ceph --cluster ceph auth get-or-create client.kube mon 'allow r' osd 'allow rwx pool=kube'
+$ sudo ceph --cluster ceph auth get-or-create client.kube mon 'allow r' osd 'allow rwx pool=kube'
 [client.kube]
         key = AQC0QVBcxVPvExAAOoA4VyxEbL4jVSU3QlmMcA==
 # if the output does not provide the key, use the following command to get the client.kube key
@@ -37,6 +39,7 @@ $ sudo ceph --cluster ceph auth get-key client.kube
 AQC0QVBcxVPvExAAOoA4VyxEbL4jVSU3QlmMcA==
 ```
 
+Then create the secret for `kube` user in Kubernetes:
 ```shell
 $ kubectl create secret generic ceph-secret-kube \
     --type="kubernetes.io/rbd" \
@@ -44,7 +47,10 @@ $ kubectl create secret generic ceph-secret-kube \
     --namespace=kube-system
 ```
 
+The `ceph-secret` and `ceph-secret-kube` will be used by StorageClass.
+
 Make sure `parameters.monitors` points to the correct Ceph monitor's IP Address and port. If the firewall is enabled on Ceph monitor, make sure that rules are added so that the firewall does not block the inbound connections. For example, create a file called `ceph-mon.xml` under `/etc/firewalld/services` with the following content:
+
 ```shell
 <?xml version="1.0" encoding="utf-8"?>
 <service>
@@ -53,12 +59,67 @@ Make sure `parameters.monitors` points to the correct Ceph monitor's IP Address 
   <port protocol="tcp" port="6800-7300"/>
 </service>
 ```
+
 And enable this rule:
-```
+```shell
 $ sudo firewall-cmd --zone=public --add-service=ceph-mon --permanent
 ```
 
+To test if Ceph monitors are reachable from pods, we can create a `busybox` box and ping the monitors from the pod.
+
+## Create RBD Provisioner
 ```shell
+$ cd deploy/rbd-provisioner
+$ kubectl create -f .
+
+clusterrolebinding.rbac.authorization.k8s.io/rbd-provisioner created
+clusterrole.rbac.authorization.k8s.io/rbd-provisioner created
+deployment.extensions/rbd-provisioner created
+rolebinding.rbac.authorization.k8s.io/rbd-provisioner created
+role.rbac.authorization.k8s.io/rbd-provisioner created
+serviceaccount/rbd-provisioner created
+```
+
+And verify that the `rbd-provisioner` is running properly:
+```shell
+$ kubectl get po -n kube-system
+NAME                               READY   STATUS    RESTARTS   AGE
+...
+rbd-provisioner-5647b5ff76-rrvvb   1/1     Running   0          60s
+...
+```
+
+## Create StorageClass
+
+```shell
+$ kubectl create -f storage-class.yaml
+
+$ kubectl get sc
+$NAME       PROVISIONER    AGE
+fast-rbd   ceph.com/rbd    60s
+```
+
+## Create PersistentVolumeClaim
+
+```shell
+$ kubectl create -f claim
+```
+
+## Mount the Storage to a Pod
+
+In the [pod definition](./pod-with-pvc.yaml), it specifies the PersistenceVolumeClaim is `myclaim`, which was created just now in the previous step:
+```shell
+...
+  volumes:
+  - name: pvc
+    persistentVolumeClaim:
+      claimName: myclaim
+```
+
+Create the pod and login to the pod to check the volume is mounted
+```shell
+$ kubectl create -f pod-with-pvc.yaml
+
 $ kubectl exec -it pod-with-pvc /bin/sh
 / # ls
 bin   dev   etc   home  mnt   proc  root  sys   tmp   usr   var
