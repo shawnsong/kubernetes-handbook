@@ -13,7 +13,7 @@ stream {
     upstream kube_apiserver {
         least_conn;
         server 192.168.1.101:6443;
-        server 192.168.1.102.2:6443;
+        server 192.168.1.102:6443;
         server 192.168.1.103:6443;
     }
 
