@@ -10,7 +10,7 @@ $ source /usr/k8s/bin/env.sh
 ```shell
 $ curl -L -O https://dl.k8s.io/v1.9.2/kubernetes-server-linux-amd64.tar.gz
 $ tar -xzvf kubernetes-server-linux-amd64.tar.gz
-$ sudo cp -r server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler} /usr/k8s/bin/
+$ sudo cp -r kubernetes/server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler} /usr/k8s/bin/
 ```
 
 ## Create Kubernetes Certificates
